@@ -103,21 +103,33 @@ Di seguito troverai le tappe e i partecipanti. Una settima prima dell'evento ver
 <b>#SanTazzo</b></br>
 <b>#Morethananight</b></br>
 <hr>
-  <!-- Form di Google integrato tramite iframe -->
-    <div class="embed-responsive embed-responsive-4by3 mb-4">
-      <iframe class="embed-responsive-item" src="https://docs.google.com/forms/d/e/1FAIpQLSec6nmDdqh3WiahU5q6wJWVM76X95qcIG_gUG4qIfabFMd5Dw/viewform?embedded=true" frameborder="0" marginheight="0" marginwidth="0">Caricamento…</iframe>
+  <div class="embed-responsive" style="padding-bottom: 75%;">
+      <iframe 
+        class="embed-responsive-item" 
+        src="https://docs.google.com/forms/d/e/1FAIpQLSec6nmDdqh3WiahU5q6wJWVM76X95qcIG_gUG4qIfabFMd5Dw/viewform?embedded=true" 
+        frameborder="0" 
+        marginheight="0" 
+        marginwidth="0" 
+        style="width: 100%; height: 700px; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0,0,0,0.2);">
+      Caricamento…
+      </iframe>
     </div>
 
     <!-- Bottone per visualizzare i partecipanti -->
-    <button id="visualizzaPartecipantiBtn" class="btn btn-primary mb-4">Visualizza Partecipanti Registrati</button>
+    <button 
+      id="visualizzaPartecipantiBtn" 
+      class="btn btn-primary mt-4" 
+      style="display: block; width: 100%; font-weight: bold; font-size: 1.2em; background-color: #007bff; border: none; border-radius: 8px;"
+      onclick="mostraPartecipanti()">
+      Visualizza Partecipanti Registrati
+    </button>
 
-    <!-- Sezione per la tabella dei partecipanti -->
-    <div class="table-container">
-      <h2>Partecipanti Registrati</h2>
-      <table class="table table-striped">
-        <thead>
+    <!-- Sezione per la tabella dei partecipanti, nascosta inizialmente -->
+    <div id="tableContainer" style="display: none; margin-top: 20px;">
+      <table class="table table-striped table-hover" style="border-radius: 8px; overflow: hidden; box-shadow: 0px 4px 8px rgba(0,0,0,0.2);">
+        <thead class="thead-dark">
           <tr>
-            <th>Nome</th>
+            <th style="text-align: center;">Nome</th>
           </tr>
         </thead>
         <tbody id="partecipantiBody">
@@ -126,16 +138,27 @@ Di seguito troverai le tappe e i partecipanti. Una settima prima dell'evento ver
       </table>
     </div>
   </div>
-<script>
- // URL del foglio Google Sheets pubblicato in formato CSV
+
+
+
+
+	 <script>
+    // URL del foglio Google Sheets pubblicato in formato CSV
     const googleSheetCSVUrl = 'https://docs.google.com/spreadsheets/d/1sHIA_rPXD348pFjid1afcasABuhVC2orGV9PoPwqRPs/gviz/tq?tqx=out:csv';
+
+    // Funzione per mostrare titolo, tabella e caricare i partecipanti
+    function mostraPartecipanti() {
+      document.getElementById('titoloPartecipanti').style.display = 'block';
+      document.getElementById('tableContainer').style.display = 'block';
+      caricaPartecipanti();
+    }
 
     // Funzione per caricare e visualizzare i partecipanti
     async function caricaPartecipanti() {
       try {
         const response = await fetch(googleSheetCSVUrl);
         const csvData = await response.text();
-        
+
         // Trasforma CSV in array
         const rows = csvData.split('\n').slice(1);
         const tableBody = document.getElementById('partecipantiBody');
@@ -147,25 +170,17 @@ Di seguito troverai le tappe e i partecipanti. Una settima prima dell'evento ver
           if (nome) {
             const newRow = document.createElement('tr');
             const nomeCell = document.createElement('td');
-
             nomeCell.textContent = nome.replace(/"/g, ''); // Rimuove eventuali virgolette
-
+            nomeCell.style.textAlign = 'center';
             newRow.appendChild(nomeCell);
             tableBody.appendChild(newRow);
           }
         });
-        
-        // Mostra la tabella una volta caricati i dati
-        document.querySelector('.table-container').style.display = 'block';
-
       } catch (error) {
         console.error("Errore durante il caricamento dei dati:", error);
       }
     }
-
-    // Aggiungi l'evento al click del bottone per visualizzare i partecipanti
-    document.getElementById('visualizzaPartecipantiBtn').addEventListener('click', caricaPartecipanti);
-</script>	
+  </script>
 <hr>
 
 <br/>
