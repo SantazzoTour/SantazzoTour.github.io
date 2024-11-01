@@ -103,7 +103,7 @@ Di seguito troverai le tappe e i partecipanti. Una settima prima dell'evento ver
 <b>#SanTazzo</b></br>
 <b>#Morethananight</b></br>
 <hr>
-  <div class="embed-responsive" style="padding-bottom: 620px;">
+  <div class="embed-responsive" id="form_registrazione" style="padding-bottom: 620px;">
       <iframe 
         class="embed-responsive-item" 
         src="https://docs.google.com/forms/d/e/1FAIpQLSec6nmDdqh3WiahU5q6wJWVM76X95qcIG_gUG4qIfabFMd5Dw/viewform?embedded=true" 
@@ -181,7 +181,7 @@ Di seguito troverai le tappe e i partecipanti. Una settima prima dell'evento ver
   </script>
 
 <br/>
-</hr>	
+<hr>	
 <div style="padding-top:20px" class="d-flex justify-content-center">
   <h4>
     TAPPE 
@@ -295,7 +295,7 @@ Di seguito troverai le tappe e i partecipanti. Una settima prima dell'evento ver
 
 $( "#scrollToPartecipa" ).click(function() {
 	  $('html,body').animate({
-    scrollTop: $('#partecipantiBody').offset().top
+    scrollTop: $('#form_registrazione').offset().top
   },'slow');
 });
 
