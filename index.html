@@ -123,8 +123,6 @@ Di seguito troverai le tappe e i partecipanti. Una settima prima dell'evento ver
       onclick="mostraPartecipanti()">
       Visualizza Partecipanti Registrati
     </button>
-  <h1 id="titoloPartecipanti" class="my-4" style="display: none; text-align: center; font-weight: bold;">Partecipanti Registrati</h1>
-
     <!-- Sezione per la tabella dei partecipanti, nascosta inizialmente -->
     <div id="tableContainer" style="display: none; margin-top: 20px;">
       <table class="table table-striped table-hover" style="border-radius: 8px; overflow: hidden; box-shadow: 0px 4px 8px rgba(0,0,0,0.2);">
@@ -149,7 +147,6 @@ Di seguito troverai le tappe e i partecipanti. Una settima prima dell'evento ver
 
     // Funzione per mostrare titolo, tabella e caricare i partecipanti
     function mostraPartecipanti() {
-      document.getElementById('titoloPartecipanti').style.display = 'block';
       document.getElementById('tableContainer').style.display = 'block';
       caricaPartecipanti();
     }
