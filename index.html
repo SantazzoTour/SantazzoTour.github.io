@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -9,6 +8,10 @@
     /*navbar*/
 .nav-item:hover{ text-decoration:underline;}
 .navbar:hover {opacity:1;}
+h4.text-success {
+  font-size: 20px;
+}
+
 
 #timer {
     font-size: 3em;
@@ -37,19 +40,11 @@
 </head>
 
 <body onscroll="percentuale()">
-	<nav class="navbar fixed-top navbar-expand-lg navbar-dark " >
+	<nav class="navbar fixed-top navbar-expand-lg navbar-dark ">
 	  <div class="container">
   	  <a class="navbar-brand" href="./index.php" >SANTAZZO</a>
-  	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-  		    <span class="navbar-toggler-icon"></span>
-  	  </button>
-  	  <div class="collapse navbar-collapse" id="navbarNavDropdown">
-    		<ul class="nav navbar-nav ml-auto">
-    		  <li class="nav-item ">
-    			    <a class="nav-link active" style="font-weight: bold;" href="./index.php">Home <span class="sr-only">(current)</span></a>
-    		  </li>
-    		</ul>
-  		</div>
+      <a class="nav-link active" style="font-weight: bold;color:white" id="scrollToPartecipa" >Partecipa!</a>
+      <a class="nav-link active" style="font-weight: bold;color:white" id="scrollToTappe" >Vedi tappe</a>
 	 	</div>
 	</nav>
 
@@ -70,8 +65,48 @@
 </div>
 
 <div class="container"><div class="row"><div class="col-md-12 col-xs-12" style="align:center;padding-top:10px" >
+<hr>
+<!--
+<div class="d-flex justify-content-center"><img src="./img/alert-triangle.svg" alt="Alert"><h4 class="text-success">
+  &nbsp Ore 21:00 ritrovo al Fashion &nbsp 
+</h4><img src="./img/alert-triangle.svg" alt="Alert"></div> 
+<hr>
+-->
+
+<div class="d-flex justify-content-center">
+  <h3>
+    Domande?  
+  </h3>
+</div>
+<div class="d-flex justify-content-center">
+<a class="btn btn-outline-primary" role="button" href="https://telegram.me/santazzo">Unisciti al Gruppo Telegram <img src="./img/icons8-telegram-app.svg" alt="Alert"></a>
+</div>
+<hr>
+<br/>
+<div class="d-flex justify-content-center">
+  <h4>
+  COSA SI FESTEGGIA
+</h4>
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABmJLR0QA/wD/AP+gvaeTAAAB70lEQVRoge2YwWvaUBzHv7+oMSbOISL0vosd9n8ZyDx63Bg7lTKhB0HwtNDBGIyB1+JlVWnZX7HhodTLLj31sqLdus44jU1eT8LMZJNfXkml7wM55CXf936fJLw8HqBQKNYa4gZrA0fILKSRt1i1aDKLiAIlEDVKIGrYs5BTqkqdhayOrWahtUQJRI0SiBq2wExP+LKKmCV1dl9sgYlpONxskGkqOeJm2QKukTzhZv/uSz/mZtkCD7//fM/NBsn8GH3gZtkCmQeD9tTQv3Hzc9xk4jwzi3W5ebYANZszY+q+5Obn6O71czqou9x8qGnUbNtdQXiz9KI7WTyWIIhsq/36KEwN8TBhALCKZvV3f+wL4NWf7eNP7xbuM0vVhXMiYZtFcxftcOOzl9NBnFL1iQ/sacAjABh37IXrcwEfONWIdsI++TnS/sRWxz5M5y43iUSZBFoimwfiCSCegMjmQQItEniazl1uyioekPgGggS3XbjbJv/j/q6F7gpKIGqUQNQogahRAsuoX/x6vEqbDKQL1IajiudrX4Ltnq/1agPnmezxpK1Pts9EKm2M3wL4Z5ECtD/xUi/2NkjKpoAUgfrwquAh9hECWysO+xWeX25spPthxw79CdWGo4onYr3ViwcAUUCMPt/GJ6VQKNaMGxymkUxc8MV5AAAAAElFTkSuQmCC" alt="Alert"> 
+</div>
+
+<p style="text-align: justify;">
+<b>San Tazzo</b>  non è solo una data o un appuntamento annuale, San Tazzo è molto di più: un <b>credo</b> , un <b>sentimento</b> , un <b>popolo</b>. È il nostro stile, il nostro mantra, la nostra cultura, il legame che unisce tante persone per un evento unico.
+</br> Come di consueto lo spirito e le modalità rimangono le medesime: si <b class="text-danger">cammina</b>  e si <b class="text-danger">beve</b>  facendo tappa nei locali delle nostre contrade.
+</br><b>Uomini e donne di valore e coraggio, preparate il fegato per sabato <b id="giorno_descr"></b> Novembre: sarà la notte del riscatto, la notte di San Tazzo !!</b>
+</p>
+<p style="text-align: justify;">
+Di seguito troverai le tappe e i partecipanti. Una settima prima dell'evento verrai aggiornato sui dettagli della processione !!
+</p>
 
 
+<b>#MolaMia</b></br>
+<b>#Santazzari</b></br>
+<b>#SanTazzo</b></br>
+<b>#Morethananight</b></br>
+<hr>
+
+</p>
 <div style="background-color:LightGray;display:none">
 <form class="form-inline" name="FormEmail" action="javascript:AggiungiEmail()" style="padding-top:8px">
   <div class="form-group sm-3 mb-2 col-9">
@@ -88,7 +123,6 @@
 
 <div id="partecipa" style="background-color:LightGray"></div>
 
-
 <div style="padding-top:10px">
 
 </div>
@@ -97,9 +131,16 @@
 <div id="partecipanti" style="padding-top:10px;"></div>
 
 </div>
+<hr>
 
+<br/>
+<div class="d-flex justify-content-center">
+  <h4>
+    TAPPE 
+  </h4>
+</div>
 <div class="container">
-<table class="table">
+<table class="table" id ="tabellaTappe">
   <thead class="thead-dark">
     <tr>
       <th scope="col">#</th>
@@ -107,40 +148,37 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
+<tr>
       <th scope="row">1</th>
-      <td>Matinèe</td>
+      <td> <a href="https://goo.gl/maps/U2w6h85BBCzwfcpRA">Fashion e Oratorio Villa</a></td>
+    </tr>
+<tr>
+        <th scope="row">2</th>
+        <td>Melograno</td>
     </tr>
     <tr>
-      <th scope="row">2</th>
-      <td>Jet</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Fashion</td>
+        <th scope="row">3</th>
+        <td>Oratorio Cisano</td>
     </tr>
     <tr>
       <th scope="row">4</th>
-      <td>Melograno</td>
+      <td><a href="https://g.page/birreria-logos?share">Logos</a></td>
     </tr>
     <tr>
       <th scope="row">5</th>
-      <td>Playa</td>
+      <td><a href="https://goo.gl/maps/hgHHM3PhoGPvJ6d29">Pagani</a></td>
     </tr>
     <tr>
       <th scope="row">6</th>
-      <td>Logos</td>
+      <td><a href="https://g.page/Abbazia-Birra?share">Abbazia</a></td>
     </tr>
     <tr>
       <th scope="row">7</th>
-      <td>Pagani</td>
-    </tr>
-      <th scope="row">8</th>
-      <td>Abbazzia</td>
+      <td><a href="https://goo.gl/maps/XPFkzTF33mCevtHm6">Jet/Fluid</a></td>
     </tr>
     <tr>
-      <th scope="row">9</th>
-      <td>Mania</td>
+      <th scope="row">8</th>
+      <td><a href="https://goo.gl/maps/1vBxcuhF5SZRmQpU7">Mania</a></td>
     </tr>
   </tbody>
 </table>
@@ -169,13 +207,12 @@
 
 <script language="javascript">
 //core
-
     let dSanTazzo=new Date()        
     //ottengo santazzo di quest'anno
     dSanTazzo=getDataSanTazzo(new Date().getFullYear())
    if (dSanTazzo.toDateString()==new Date().toDateString()){
      //oggi è santazzo!
-       document.getElementById("timer").innerHTML=""  
+      document.getElementById("timer").innerHTML=""  
       document.getElementById("titolo").innerHTML="<h1>OGGI È SANTAZZO!!!</h1>"  
       document.getElementById("data").innerHTML="<h1>RISCALDA IL FEGATO!</h1>"
    }else if(dSanTazzo<new Date()){//santazzo superato
@@ -189,7 +226,9 @@
     
     if (dSanTazzo.toDateString()!=new Date().toDateString()){
       //data
-      document.getElementById("data").innerHTML=dSanTazzo.toLocaleDateString()
+      var giornoSanTazzo = dSanTazzo.toDateString().split(" ")[2];
+      document.getElementById("data").innerHTML='Sabato ' + giornoSanTazzo + ' Novembre ';;
+      document.getElementById("giorno_descr").innerHTML=giornoSanTazzo
       //titolo
       document.getElementById("titolo").innerHTML="<h1>SANTAZZO "+dSanTazzo.getFullYear()+"!</h1>"
     }
@@ -203,14 +242,35 @@
   let numB=Math.random() * 200
 
   navbar[0].style="background-color:black;background: linear-gradient(to top, rgba("+numR+", "+numG+", "+numB+", 0), rgba("+numR+", "+numG+", "+numB+",0.55));"
+  
+  
+
+$( "#scrollToPartecipa" ).click(function() {
+  $( "#inputNominativo" ).focus();  
+});
+
+
+$( "#scrollToTappe" ).click(function() {
+  $('html,body').animate({
+    scrollTop: $('#tabellaTappe').offset().top
+  },'slow');
+});
+
+
+
+setTimeout(() => {
+  if (document.getElementById('bnpartecipa')){
+  document.getElementById('bnpartecipa').click();
+  }
+}, 1000);
   let btnpart=0 
-  function AddInputNome(){
+  function AddInputNome() {
     if (btnpart==0){
       document.getElementById("partecipa")
     .innerHTML='<form class="form-inline" name="FormEmail" action="javascript:AddPartecipante()" style="padding-top:8px">'+
     '<div class="form-group sm-3 mb-2 col-9">'+
     '<label for="inputNominativo" class="sr-only">Nominativo</label>'+
-    '<input type="text" class="form-control" style="width:100%" id="inputNominativo" placeholder="Inserire un nomiativo" required>'+
+    '<input type="text" class="form-control" style="width:100%" id="inputNominativo" placeholder="Inserire un nominativo" required>'+
   '</div>'+
   '<div class="col-auto">'+
   '<button type="submit" class="btn btn-success mb-2">invia!</button>'+
