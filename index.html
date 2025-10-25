@@ -50,128 +50,99 @@
       transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
       border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-      padding: 0.5rem 0;
+      padding: 1rem 0;
     }
 
     .navbar .container {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .navbar-nav-mobile {
-      display: flex;
-      gap: 0.3rem;
       justify-content: center;
-      flex-wrap: nowrap;
-      width: 100%;
-    }
-
-    @media (min-width: 768px) {
-      .navbar {
-        padding: 0.5rem 1rem;
-      }
-
-      .navbar .container {
-        flex-direction: row;
-        justify-content: space-between;
-        gap: 0;
-      }
-
-      .navbar-nav-mobile {
-        width: auto;
-        gap: 0.5rem;
-      }
-    }
-
-    @media (min-width: 992px) {
-      .navbar-nav-mobile {
-        gap: 1rem;
-      }
+      align-items: center;
     }
 
     .navbar-brand {
       font-family: 'Bangers', cursive !important;
-      font-size: 1.6rem !important;
-      background: linear-gradient(45deg, var(--beer-gold), var(--party-pink), var(--party-purple));
+      font-size: 2.2rem !important;
+      background: linear-gradient(45deg, var(--beer-gold), var(--party-pink), var(--party-purple), var(--beer-gold));
+      background-size: 200% 200%;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      letter-spacing: 2px;
-      animation: glow 2s ease-in-out infinite alternate;
+      letter-spacing: 4px;
+      animation: gradientShift 3s ease infinite, titleBounce 2s ease-in-out infinite;
       white-space: nowrap;
-    }
-
-    @keyframes glow {
-      from { filter: drop-shadow(0 0 3px var(--beer-gold)); }
-      to { filter: drop-shadow(0 0 10px var(--party-pink)); }
-    }
-
-    .nav-link {
+      text-shadow: 0 0 30px rgba(255, 179, 0, 0.5);
       position: relative;
-      font-weight: 600 !important;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      font-size: 0.7rem !important;
-      padding: 0.4rem 0.4rem !important;
-      white-space: nowrap;
+      display: inline-block;
     }
 
-    .nav-link::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--beer-gold), var(--party-pink));
-      transition: width 0.3s ease;
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
-    .nav-link:hover::before,
-    .nav-link:active::before {
-      width: 100%;
+    @keyframes titleBounce {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-5px) scale(1.02); }
     }
 
-    .nav-link:hover,
-    .nav-link:active {
-      color: var(--accent-color) !important;
+    /* Animazione birre */
+    .beer-icon {
+      display: inline-block;
+      font-size: 2rem;
+      animation: beerSpin 4s ease-in-out infinite;
+    }
+
+    .beer-icon:first-child {
+      animation-delay: 0s;
+    }
+
+    .beer-icon:last-child {
+      animation-delay: 0.5s;
+    }
+
+    @keyframes beerSpin {
+      0%, 100% { transform: rotate(0deg) translateY(0px) scale(1); }
+      25% { transform: rotate(-15deg) translateY(-8px) scale(1.1); }
+      50% { transform: rotate(0deg) translateY(-3px) scale(1.05); }
+      75% { transform: rotate(15deg) translateY(-8px) scale(1.1); }
     }
 
     /* Tablet navbar */
     @media (min-width: 768px) {
-      .navbar-brand {
-        font-size: 2rem !important;
+      .navbar {
+        padding: 1.2rem 0;
       }
-      
-      .nav-link {
-        font-size: 0.85rem !important;
-        padding: 0.5rem 0.8rem !important;
+
+      .navbar-brand {
+        font-size: 3rem !important;
+        letter-spacing: 6px;
+      }
+
+      .beer-icon {
+        font-size: 2.5rem;
+      }
+
+      @keyframes beerSpin {
+        0%, 100% { transform: rotate(0deg) translateY(0px) scale(1); }
+        25% { transform: rotate(-20deg) translateY(-12px) scale(1.15); }
+        50% { transform: rotate(0deg) translateY(-5px) scale(1.08); }
+        75% { transform: rotate(20deg) translateY(-12px) scale(1.15); }
       }
     }
 
     /* Desktop navbar */
     @media (min-width: 992px) {
+      .navbar {
+        padding: 1.5rem 0;
+      }
+
       .navbar-brand {
-        font-size: 2.5rem !important;
-        letter-spacing: 3px;
-      }
-      
-      .nav-link {
-        font-size: 1rem !important;
-        letter-spacing: 1px;
-        padding: 0.5rem 1rem !important;
+        font-size: 3.5rem !important;
+        letter-spacing: 8px;
       }
 
-      .nav-link:hover {
-        transform: translateY(-2px);
-      }
-
-      @keyframes glow {
-        from { filter: drop-shadow(0 0 5px var(--beer-gold)); }
-        to { filter: drop-shadow(0 0 20px var(--party-pink)); }
+      .beer-icon {
+        font-size: 3rem;
       }
     }
 
@@ -440,6 +411,135 @@
       #timer > div span {
         font-size: 0.9rem;
         letter-spacing: 2px;
+      }
+    }
+
+    /* Navigation Buttons sotto il Timer */
+    .navigation-buttons {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: center;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+      padding: 0 10px;
+    }
+
+    .nav-btn {
+      background: linear-gradient(135deg, var(--beer-gold), var(--secondary-color));
+      border: none;
+      border-radius: 50px;
+      padding: 0.9rem 1.5rem;
+      color: white;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 20px rgba(255, 179, 0, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+      flex: 1;
+      min-width: 150px;
+      justify-content: center;
+    }
+
+    .nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+      transition: left 0.5s ease;
+    }
+
+    .nav-btn:active::before {
+      left: 100%;
+    }
+
+    .nav-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 3px 15px rgba(255, 179, 0, 0.5);
+    }
+
+    .btn-emoji {
+      font-size: 1.3rem;
+      animation: emoji-bounce 2s ease-in-out infinite;
+    }
+
+    .btn-text {
+      white-space: nowrap;
+    }
+
+    .nav-btn:nth-child(1) {
+      background: linear-gradient(135deg, var(--party-purple), var(--party-pink));
+      box-shadow: 0 5px 20px rgba(131, 56, 236, 0.4);
+    }
+
+    .nav-btn:nth-child(2) {
+      background: linear-gradient(135deg, var(--party-pink), #ff4d6d);
+      box-shadow: 0 5px 20px rgba(255, 0, 110, 0.4);
+    }
+
+    .nav-btn:nth-child(3) {
+      background: linear-gradient(135deg, var(--beer-gold), var(--secondary-color));
+      box-shadow: 0 5px 20px rgba(255, 179, 0, 0.4);
+    }
+
+    /* Desktop navigation buttons */
+    @media (min-width: 768px) {
+      .navigation-buttons {
+        gap: 1.2rem;
+        margin-top: 3rem;
+      }
+
+      .nav-btn {
+        padding: 1rem 2rem;
+        font-size: 0.95rem;
+        letter-spacing: 1.5px;
+        flex: 0;
+        min-width: auto;
+      }
+
+      .nav-btn:hover::before {
+        left: 100%;
+      }
+
+      .nav-btn:hover {
+        transform: translateY(-5px) scale(1.05);
+      }
+
+      .nav-btn:nth-child(1):hover {
+        box-shadow: 0 10px 30px rgba(131, 56, 236, 0.6);
+      }
+
+      .nav-btn:nth-child(2):hover {
+        box-shadow: 0 10px 30px rgba(255, 0, 110, 0.6);
+      }
+
+      .nav-btn:nth-child(3):hover {
+        box-shadow: 0 10px 30px rgba(255, 179, 0, 0.6);
+      }
+
+      .btn-emoji {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (min-width: 992px) {
+      .nav-btn {
+        padding: 1.1rem 2.5rem;
+        font-size: 1rem;
+        letter-spacing: 2px;
+      }
+
+      .btn-emoji {
+        font-size: 1.8rem;
       }
     }
 
@@ -969,13 +1069,12 @@
 
 <body onscroll="percentuale()">
 	<nav class="navbar fixed-top navbar-expand-lg navbar-dark">
-	  <div class="container">
-  	  <a class="navbar-brand" href="#"><span class="emoji-float">🍺</span> SANTAZZO <span class="emoji-float">🎉</span></a>
-      <div class="navbar-nav-mobile">
-        <a class="nav-link active" style="font-weight: bold;color:white" id="scrollToCosa">ℹ️ Info</a>
-        <a class="nav-link active" style="font-weight: bold;color:white" id="scrollToPartecipa">🎟️ Iscriviti</a>
-        <a class="nav-link active" style="font-weight: bold;color:white" id="scrollToTappe">🗺️ Tappe</a>
-      </div>
+	  <div class="container" style="justify-content: center;">
+  	  <a class="navbar-brand" href="#" style="margin: 0;">
+        <span class="emoji-float beer-icon">�</span> 
+        SANTAZZO 
+        <span class="emoji-float beer-icon">🍺</span>
+      </a>
 	 	</div>
 	</nav>
 
@@ -986,7 +1085,23 @@
         <div class="timer-container">
             <div id="titolo" style="text-align: center;"></div> 
             <div id="data" style="text-align: center;"></div>    
-            <div id="timer" style="text-align: center;"></div>  
+            <div id="timer" style="text-align: center;"></div>
+            
+            <!-- Bottoni di navigazione -->
+            <div class="navigation-buttons">
+              <button class="nav-btn" id="btnCosa">
+                <span class="btn-emoji">🎊</span>
+                <span class="btn-text">Cosa si festeggia</span>
+              </button>
+              <button class="nav-btn" id="btnIscriviti">
+                <span class="btn-emoji">📝</span>
+                <span class="btn-text">Iscriviti</span>
+              </button>
+              <button class="nav-btn" id="btnTappe">
+                <span class="btn-emoji">🗺️</span>
+                <span class="btn-text">Le Tappe</span>
+              </button>
+            </div>
         </div>
       </div>
     </div>  
@@ -1288,7 +1403,33 @@ Di seguito troverai le tappe e i partecipanti. Una settimana prima dell'evento v
   navbar[0].style="background-color:black;background: linear-gradient(to top, rgba("+numR+", "+numG+", "+numB+", 0), rgba("+numR+", "+numG+", "+numB+",0.55));"
   
   
+// Bottoni di navigazione sotto il timer
+$( "#btnCosa" ).click(function() {
+	  $('html,body').animate({
+    scrollTop: $('#cosa-si-festeggia').offset().top - 100
+  },'slow');
+});
 
+$( "#btnIscriviti" ).click(function() {
+	  $('html,body').animate({
+    scrollTop: $('#form_registrazione').offset().top - 100
+  },'slow');
+});
+
+$( "#btnTappe" ).click(function() {
+  $('html,body').animate({
+    scrollTop: $('#tabellaTappe').offset().top - 100
+  },'slow');
+});
+
+// Vecchi scroll handlers (rimossi)
+$( "#scrollToCosa" ).click(function() {
+	  $('html,body').animate({
+    scrollTop: $('#cosa-si-festeggia').offset().top - 80
+  },'slow');
+});
+
+// Vecchi scroll handlers (rimossi)
 $( "#scrollToCosa" ).click(function() {
 	  $('html,body').animate({
     scrollTop: $('#cosa-si-festeggia').offset().top - 80
