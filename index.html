@@ -174,18 +174,61 @@
       }
     }
 
+    /* Birre animate nello sfondo */
     .hero-section::before {
-      content: '';
+      content: '🍺';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: 
-        radial-gradient(circle at 20% 80%, rgba(255, 179, 0, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 0, 110, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(131, 56, 236, 0.2) 0%, transparent 50%);
-      animation: gradient-shift 10s ease infinite;
+      font-size: 3rem;
+      opacity: 0.15;
+      top: 10%;
+      left: 5%;
+      animation: float-beer-1 20s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    .hero-section::after {
+      content: '🍻';
+      position: absolute;
+      font-size: 2.5rem;
+      opacity: 0.12;
+      top: 70%;
+      right: 10%;
+      animation: float-beer-2 18s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    @keyframes float-beer-1 {
+      0%, 100% { 
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 0.15;
+      }
+      25% { 
+        transform: translate(30px, -50px) rotate(10deg);
+        opacity: 0.2;
+      }
+      50% { 
+        transform: translate(-20px, -80px) rotate(-5deg);
+        opacity: 0.18;
+      }
+      75% { 
+        transform: translate(40px, -30px) rotate(15deg);
+        opacity: 0.12;
+      }
+    }
+
+    @keyframes float-beer-2 {
+      0%, 100% { 
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 0.12;
+      }
+      33% { 
+        transform: translate(-40px, 30px) rotate(-15deg) scale(1.1);
+        opacity: 0.18;
+      }
+      66% { 
+        transform: translate(25px, -40px) rotate(10deg) scale(0.9);
+        opacity: 0.15;
+      }
     }
 
     @keyframes gradient-shift {
@@ -1137,7 +1180,130 @@
       </div>
     </div>  
 </div>
+<!-- Birre animate di sfondo -->
+<div class="beer-bg" id="beerBackground"></div>
 </div>
+
+<style>
+.beer-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.floating-beer {
+  position: absolute;
+  font-size: 2.5rem;
+  opacity: 0.15;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  filter: blur(0.5px);
+}
+
+@keyframes float-diagonal-1 {
+  0%, 100% { 
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% { 
+    transform: translate(50px, -100px) rotate(180deg);
+  }
+}
+
+@keyframes float-diagonal-2 {
+  0%, 100% { 
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  50% { 
+    transform: translate(-60px, 80px) rotate(-180deg) scale(1.2);
+  }
+}
+
+@keyframes float-diagonal-3 {
+  0%, 100% { 
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% { 
+    transform: translate(40px, 60px) rotate(120deg);
+  }
+  66% { 
+    transform: translate(-30px, -40px) rotate(240deg);
+  }
+}
+
+@keyframes float-diagonal-4 {
+  0%, 100% { 
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  50% { 
+    transform: translate(70px, -60px) rotate(360deg) scale(0.8);
+  }
+}
+
+@keyframes float-diagonal-5 {
+  0%, 100% { 
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% { 
+    transform: translate(-50px, -70px) rotate(-90deg);
+  }
+  75% { 
+    transform: translate(60px, 50px) rotate(90deg);
+  }
+}
+
+@keyframes float-diagonal-6 {
+  0%, 100% { 
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  50% { 
+    transform: translate(-80px, -50px) rotate(180deg) scale(1.1);
+  }
+}
+</style>
+
+<script>
+// Crea birre animate nello sfondo
+function createFloatingBeers() {
+  const beerBg = document.getElementById('beerBackground');
+  const beerEmojis = ['🍺', '🍻', '🍺', '🍻', '🥂', '🍾'];
+  const numberOfBeers = window.innerWidth < 768 ? 8 : 15; // Meno birre su mobile
+  
+  for (let i = 0; i < numberOfBeers; i++) {
+    const beer = document.createElement('div');
+    beer.className = 'floating-beer';
+    beer.textContent = beerEmojis[Math.floor(Math.random() * beerEmojis.length)];
+    
+    // Posizione casuale
+    beer.style.left = Math.random() * 100 + '%';
+    beer.style.top = Math.random() * 100 + '%';
+    
+    // Dimensione casuale
+    const size = (Math.random() * 2 + 1.5) + 'rem';
+    beer.style.fontSize = size;
+    
+    // Opacità casuale
+    beer.style.opacity = Math.random() * 0.1 + 0.08;
+    
+    // Animazione casuale
+    const animationNum = (i % 6) + 1;
+    beer.style.animation = `float-diagonal-${animationNum} ${Math.random() * 10 + 15}s ease-in-out infinite`;
+    beer.style.animationDelay = Math.random() * 5 + 's';
+    
+    beerBg.appendChild(beer);
+  }
+}
+
+// Esegui quando il DOM è pronto
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', createFloatingBeers);
+} else {
+  createFloatingBeers();
+}
+</script>
 
 <div class="container content-section"><div class="row"><div class="col-md-12 col-xs-12" style="padding-top:3rem; padding-bottom:3rem">
 <!--
@@ -1188,7 +1354,7 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
   <h3 style="text-align: center; color: white; font-family: 'Bangers', cursive; font-size: 2rem; margin-bottom: 1.5rem; letter-spacing: 1.5px; line-height: 1.3;">
     <span class="emoji-float">📝</span> ISCRIVITI È GRATIS! <span class="emoji-float">🎫</span>
   </h3>
-  <div class="embed-responsive" id="form_registrazione" style="padding-bottom: 520px;">
+  <div class="embed-responsive" id="form_registrazione" style="padding-bottom: 530px;">
       <iframe 
         class="embed-responsive-item" 
         src="https://docs.google.com/forms/d/e/1FAIpQLSec6nmDdqh3WiahU5q6wJWVM76X95qcIG_gUG4qIfabFMd5Dw/viewform?embedded=true" 
@@ -1444,7 +1610,7 @@ $( "#btnCosa" ).click(function() {
 
 $( "#btnIscriviti" ).click(function() {
 	  $('html,body').animate({
-    scrollTop: $('#form_registrazione').offset().top - 150
+    scrollTop: $('#form_registrazione').offset().top - 130
   },'slow');
 });
 
