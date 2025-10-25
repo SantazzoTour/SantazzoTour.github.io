@@ -148,11 +148,9 @@
 
     /* Hero Section con Timer Spettacolare - MOBILE FIRST */
     .hero-section {
-      background-image: url(./img/2.jpg);
-      background-attachment: scroll;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      background-size: 400% 400%;
+      animation: hero-gradient 15s ease infinite;
       min-height: 100vh;
       display: flex;
       align-items: flex-start;
@@ -162,10 +160,15 @@
       padding: 117px 13px 30px;
     }
 
+    @keyframes hero-gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     /* Desktop parallax effect */
     @media (min-width: 768px) {
       .hero-section {
-        background-attachment: fixed;
         padding: 120px 20px 50px;
         align-items: center;
       }
@@ -178,7 +181,10 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(255, 107, 53, 0.3), rgba(131, 56, 236, 0.4));
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(255, 179, 0, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 0, 110, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(131, 56, 236, 0.2) 0%, transparent 50%);
       animation: gradient-shift 10s ease infinite;
     }
 
@@ -1156,7 +1162,7 @@
 
 <div class="info-card">
 <p style="text-align: justify;">
-   <b>San Tazzo è il pub crawl più famoso di Cisano Bergamasco!</b></br></br>
+   <b>San Tazzo è il pub crawl più famoso di Cisano Bergamasco!</b></br>
  Non è solo una data o un appuntamento annuale, San Tazzo è molto di più: un <b>credo</b>, un <b>sentimento</b>, un <b>popolo</b>. È il legame che unisce tante persone per un evento unico.
 <br><br>
 Come di consueto lo spirito e le modalità rimangono le medesime: si <b style="color: red">cammina</b> e si <b style="color: red">beve</b> facendo tappa nei locali delle nostre contrade.
@@ -1182,7 +1188,7 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
   <h3 style="text-align: center; color: white; font-family: 'Bangers', cursive; font-size: 2rem; margin-bottom: 1.5rem; letter-spacing: 1.5px; line-height: 1.3;">
     <span class="emoji-float">📝</span> ISCRIVITI È GRATIS! <span class="emoji-float">🎫</span>
   </h3>
-  <div class="embed-responsive" id="form_registrazione" style="padding-bottom: 550px;">
+  <div class="embed-responsive" id="form_registrazione" style="padding-bottom: 530px;">
       <iframe 
         class="embed-responsive-item" 
         src="https://docs.google.com/forms/d/e/1FAIpQLSec6nmDdqh3WiahU5q6wJWVM76X95qcIG_gUG4qIfabFMd5Dw/viewform?embedded=true" 
@@ -1438,7 +1444,7 @@ $( "#btnCosa" ).click(function() {
 
 $( "#btnIscriviti" ).click(function() {
 	  $('html,body').animate({
-    scrollTop: $('#form_registrazione').offset().top - 80
+    scrollTop: $('#form_registrazione').offset().top - 130
   },'slow');
 });
 
