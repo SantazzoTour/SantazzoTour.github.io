@@ -1167,6 +1167,10 @@
                 <span class="btn-emoji">🗺️</span>
                 <span class="btn-text">Le Tappe</span>
               </button>
+              <button class="nav-btn" id="btnQuiz" style="display: none;">
+                <span class="btn-emoji">🎯</span>
+                <span class="btn-text">Quiz Tappe</span>
+              </button>
             </div>
         </div>
       </div>
@@ -1557,7 +1561,7 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
   <thead>
     <tr>
       <th scope="col" style="width: 100px; text-align: center;">🏁 Tappa</th>
-      <th scope="col">📍 Locale</th>
+      <th scope="col" style="width: 100%;"> 📍 Locale</th>
     </tr>
   </thead>
   <tbody>
@@ -1617,9 +1621,9 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
 </div>
 
 <!-- SEZIONE QUIZ TAPPE -->
-<div class="container" style="margin-top: 4rem; margin-bottom: 3rem;">
+<div class="container" id="quizSection" style="margin-top: 4rem; margin-bottom: 3rem; display: none;">
   <div class="section-title">
-     QUIZ DELLE TAPPE
+    <span class="emoji-float">🎯</span> QUIZ DELLE TAPPE <span class="emoji-float">🏆</span>
   </div>
 
   <!-- Pannello Amministratore (Password Protected) -->
@@ -1629,7 +1633,7 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
         👑 PANNELLO AMMINISTRATORE 👑
       </h4>
       
-      <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem;">
+      <div style="color:black">
         <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">📍 Seleziona Tappa:</label>
         <select id="adminTappaSelect" class="form-control" style="margin-bottom: 1rem; padding: 0.8rem; border-radius: 10px; font-size: 1rem;">
           <option value="1">Tappa - 1</option>
@@ -1734,6 +1738,19 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
   <div style="text-align: center; margin-top: 2rem;">
     <button onclick="showAdminLogin()" id="adminLoginBtn" class="btn" style="background: rgba(0,0,0,0.1); border: 2px dashed rgba(0,0,0,0.3); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.9rem; color: #666;">
       🔐 Admin
+    </button>
+  </div>
+  
+  <!-- Pannello di controllo Admin (visibile solo dopo login) -->
+  <div id="adminControls" style="display: none; text-align: center; margin-top: 1.5rem; padding: 1.5rem; background: rgba(131, 56, 236, 0.1); border-radius: 15px; border: 2px dashed var(--party-purple);">
+    <h5 style="font-family: 'Bangers', cursive; font-size: 1.3rem; color: var(--party-purple); margin-bottom: 1rem;">
+      ⚙️ CONTROLLI AMMINISTRATORE
+    </h5>
+    <button onclick="toggleQuizVisibility()" id="toggleQuizBtn" class="btn btn-modern" style="padding: 0.8rem 2rem !important; margin: 0.5rem;">
+      <span id="quizBtnIcon">👁️</span> <span id="quizBtnText">Mostra Quiz ai Partecipanti</span>
+    </button>
+    <button onclick="logoutAdmin()" class="btn" style="background: linear-gradient(135deg, #ff6b6b, #ee5a6f); color: white; border: none; padding: 0.8rem 2rem; border-radius: 50px; font-weight: 700; margin: 0.5rem;">
+      🚪 Logout
     </button>
   </div>
 </div>
@@ -1955,6 +1972,7 @@ let currentQuizData = null;
 let participantNameGlobal = null;
 let quizAnswers = [];
 let quizListener = null;
+let isQuizVisible = false; // Stato visibilità quiz
 
 // ============================================
 // FUNZIONI ADMIN
@@ -1977,15 +1995,97 @@ function checkAdminPassword() {
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('participantPanel').style.display = 'none';
     document.getElementById('adminLoginBtn').style.display = 'none';
+    document.getElementById('adminControls').style.display = 'block';
+    
+    // Mostra automaticamente la sezione quiz all'admin
+    document.getElementById('quizSection').style.display = 'block';
     
     // Inizia ad ascoltare le risposte
     listenToAnswers();
+    
+    // Carica lo stato del quiz da Firebase
+    loadQuizVisibilityState();
   } else {
     document.getElementById('adminError').style.display = 'block';
     setTimeout(() => {
       document.getElementById('adminError').style.display = 'none';
     }, 3000);
   }
+}
+
+function logoutAdmin() {
+  if (confirm('🚪 Vuoi uscire dal pannello amministratore?')) {
+    // Nascondi pannelli admin
+    document.getElementById('adminPanel').style.display = 'none';
+    document.getElementById('adminControls').style.display = 'none';
+    document.getElementById('adminLoginBtn').style.display = 'block';
+    
+    // Mostra pannello partecipanti
+    document.getElementById('participantPanel').style.display = 'block';
+    
+    // Nascondi quiz se non è visibile per tutti
+    if (!isQuizVisible) {
+      document.getElementById('quizSection').style.display = 'none';
+    }
+    
+    // Reset
+    currentQuizData = null;
+    quizAnswers = [];
+  }
+}
+
+function toggleQuizVisibility() {
+  if (!database) {
+    alert('❌ Firebase non configurato!');
+    return;
+  }
+
+  isQuizVisible = !isQuizVisible;
+  
+  // Salva lo stato su Firebase
+  database.ref('quizSettings/visible').set(isQuizVisible)
+    .then(() => {
+      updateQuizVisibilityUI();
+      
+      if (isQuizVisible) {
+        alert('✅ Quiz ora visibile a tutti i partecipanti! 🎯');
+      } else {
+        alert('👁️ Quiz nascosto ai partecipanti (solo tu lo vedi)');
+      }
+    })
+    .catch((error) => {
+      console.error('Errore Firebase:', error);
+      alert('❌ Errore nel salvare le impostazioni');
+    });
+}
+
+function updateQuizVisibilityUI() {
+  const icon = document.getElementById('quizBtnIcon');
+  const text = document.getElementById('quizBtnText');
+  const btnQuiz = document.getElementById('btnQuiz');
+  
+  if (isQuizVisible) {
+    icon.textContent = '🙈';
+    text.textContent = 'Nascondi Quiz ai Partecipanti';
+    btnQuiz.style.display = 'flex';
+  } else {
+    icon.textContent = '👁️';
+    text.textContent = 'Mostra Quiz ai Partecipanti';
+    btnQuiz.style.display = 'none';
+  }
+}
+
+function loadQuizVisibilityState() {
+  if (!database) return;
+  
+  database.ref('quizSettings/visible').once('value')
+    .then((snapshot) => {
+      isQuizVisible = snapshot.val() || false;
+      updateQuizVisibilityUI();
+    })
+    .catch((error) => {
+      console.error('Errore nel caricare lo stato:', error);
+    });
 }
 
 // Chiudi modal con ESC
@@ -2399,6 +2499,43 @@ document.getElementById('btnIscriviti')?.addEventListener('click', () => {
 
 document.getElementById('btnTappe')?.addEventListener('click', () => {
   smoothScroll('tabellaTappe', 100);
+});
+
+document.getElementById('btnQuiz')?.addEventListener('click', () => {
+  smoothScroll('quizSection', 100);
+});
+
+// ============================================
+// CONTROLLA VISIBILITÀ QUIZ PER PARTECIPANTI
+// ============================================
+function checkQuizVisibilityForParticipants() {
+  if (!database) return;
+  
+  // Ascolta i cambiamenti della visibilità del quiz
+  database.ref('quizSettings/visible').on('value', (snapshot) => {
+    const visible = snapshot.val() || false;
+    const quizSection = document.getElementById('quizSection');
+    const btnQuiz = document.getElementById('btnQuiz');
+    const adminPanel = document.getElementById('adminPanel');
+    
+    // Se non è admin (pannello admin nascosto)
+    if (adminPanel.style.display === 'none' || !adminPanel.style.display) {
+      if (visible) {
+        quizSection.style.display = 'block';
+        btnQuiz.style.display = 'flex';
+      } else {
+        quizSection.style.display = 'none';
+        btnQuiz.style.display = 'none';
+      }
+    }
+  });
+}
+
+// Avvia il controllo quando la pagina è caricata
+window.addEventListener('load', () => {
+  if (database) {
+    checkQuizVisibilityForParticipants();
+  }
 });
 
 
