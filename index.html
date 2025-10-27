@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;600;700;900&family=Bangers&display=swap" rel="stylesheet">
-  
+
 <style>
     :root {
       --primary-color: #ff6b35;
@@ -1127,13 +1127,6 @@
       }
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-  
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
@@ -1605,24 +1598,19 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
 
 </div>
 
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content" style="border-radius: 25px; border: none; overflow: hidden;">
-      <div class="modal-header" style="background: linear-gradient(135deg, var(--party-pink), var(--party-purple)); color: white; border: none;">
-        <h5 class="modal-title" id="exampleModalCenterTitle" style="font-family: 'Bangers', cursive; font-size: 1.8rem; letter-spacing: 2px;">
-          🎉 REGISTRAZIONE AVVENUTA! 🎉
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white; opacity: 1;">
-          <span aria-hidden="true" style="font-size: 2rem;">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" style="padding: 2rem; text-align: center; font-size: 1.2rem;">
-       <p style="margin-bottom: 1rem;">📧 <b>Controlla la tua email!</b></p>
-       <p style="font-size: 1.5rem; margin: 0;"><b style="color: var(--party-pink);">Ti meriti uno shot! 🥃</b></p>
-      </div>
-      <div class="modal-footer" style="border: none; justify-content: center; padding-bottom: 2rem;">
-        <button type="button" class="btn btn-modern" onclick="location.reload();" data-dismiss="modal" style="padding: 0.8rem 2rem !important;">Chiudi</button>
-      </div>
+<!-- Modal Registrazione Avvenuta (Custom) -->
+<div class="modal-overlay" id="registrationModal">
+  <div class="modal-box">
+    <div class="modal-header-custom">
+      <h5>🎉 REGISTRAZIONE AVVENUTA! 🎉</h5>
+      <button class="modal-close" onclick="closeRegistrationModal()">&times;</button>
+    </div>
+    <div class="modal-body-custom" style="text-align: center; font-size: 1.2rem;">
+      <p style="margin-bottom: 1rem;">📧 <b>Controlla la tua email!</b></p>
+      <p style="font-size: 1.5rem; margin: 0;"><b style="color: var(--party-pink);">Ti meriti uno shot! 🥃</b></p>
+      <button type="button" class="btn btn-modern" onclick="closeRegistrationModal(); location.reload();" style="width: 100%; padding: 1rem !important; margin-top: 1.5rem;">
+        Chiudi
+      </button>
     </div>
   </div>
 </div>
@@ -1802,7 +1790,7 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
   background: #f8d7da;
 }
 
-/* Pulse per quiz attivo */
+    /* Pulse per quiz attivo */
 @keyframes pulse-quiz {
   0%, 100% {
     box-shadow: 0 0 0 0 rgba(131, 56, 236, 0.7);
@@ -1815,9 +1803,147 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
 .quiz-active {
   animation: pulse-quiz 2s infinite;
 }
-</style>
 
-<script>
+/* Modal custom (senza Bootstrap) */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 9998;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-overlay.show {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-box {
+  background: white;
+  border-radius: 25px;
+  width: 90%;
+  max-width: 500px;
+  overflow: hidden;
+  animation: slideIn 0.3s ease;
+  position: relative;
+  z-index: 9999;
+}
+
+.modal-header-custom {
+  background: linear-gradient(135deg, var(--party-purple), var(--party-pink));
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header-custom h5 {
+  font-family: 'Bangers', cursive;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: transform 0.2s ease;
+}
+
+.modal-close:hover {
+  transform: scale(1.2) rotate(90deg);
+}
+
+.modal-body-custom {
+  padding: 2rem;
+}
+
+.modal-body-custom input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  transition: border-color 0.3s ease;
+}
+
+.modal-body-custom input:focus {
+  outline: none;
+  border-color: var(--party-purple);
+}
+
+.modal-error {
+  color: #ff6b6b;
+  text-align: center;
+  margin-top: 1rem;
+  font-weight: 600;
+  display: none;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form controls custom */
+.form-control {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--party-purple);
+}
+
+select.form-control {
+  cursor: pointer;
+  background: white;
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+  font-family: 'Poppins', sans-serif;
+}
+  </style><script>
 
 const firebaseConfig = {
   apiKey: "AIzaSyBpNwx80lYHvV0rq7l-XCKSJUiyqWySC0c",
@@ -1843,7 +1969,7 @@ try {
 // ============================================
 // VARIABILI GLOBALI
 // ============================================
-const ADMIN_PASSWORD = "santazzo2025"; // Cambia questa password!
+const ADMIN_PASSWORD = "Santazzo2025!"; // Cambia questa password!
 let currentQuizData = null;
 let participantNameGlobal = null;
 let quizAnswers = [];
@@ -1853,17 +1979,23 @@ let quizListener = null;
 // FUNZIONI ADMIN
 // ============================================
 function showAdminLogin() {
-  $('#adminLoginModal').modal('show');
+  document.getElementById('adminLoginModal').classList.add('show');
+  document.getElementById('adminPassword').focus();
+}
+
+function closeAdminModal() {
+  document.getElementById('adminLoginModal').classList.remove('show');
+  document.getElementById('adminPassword').value = '';
+  document.getElementById('adminError').style.display = 'none';
 }
 
 function checkAdminPassword() {
   const password = document.getElementById('adminPassword').value;
   if (password === ADMIN_PASSWORD) {
-    $('#adminLoginModal').modal('hide');
+    closeAdminModal();
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('participantPanel').style.display = 'none';
     document.getElementById('adminLoginBtn').style.display = 'none';
-    document.getElementById('adminPassword').value = '';
     
     // Inizia ad ascoltare le risposte
     listenToAnswers();
@@ -1874,6 +2006,20 @@ function checkAdminPassword() {
     }, 3000);
   }
 }
+
+// Chiudi modal con ESC
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeAdminModal();
+  }
+});
+
+// Chiudi modal cliccando fuori
+document.getElementById('adminLoginModal')?.addEventListener('click', (e) => {
+  if (e.target.id === 'adminLoginModal') {
+    closeAdminModal();
+  }
+});
 
 function startQuiz() {
   const tappa = document.getElementById('adminTappaSelect').value;
@@ -2210,59 +2356,45 @@ window.addEventListener('load', () => {
   navbar[0].style="background-color:black;background: linear-gradient(to top, rgba("+numR+", "+numG+", "+numB+", 0), rgba("+numR+", "+numG+", "+numB+",0.55));"
   
   
-// Bottoni di navigazione sotto il timer
-$( "#btnCosa" ).click(function() {
-	  $('html,body').animate({
-    scrollTop: $('#cosa-si-festeggia').offset().top - 100
-  },'slow');
-});
+// ============================================
+// FUNZIONI MODAL REGISTRAZIONE
+// ============================================
+function closeRegistrationModal() {
+  document.getElementById('registrationModal').classList.remove('show');
+}
 
-$( "#btnIscriviti" ).click(function() {
-	  $('html,body').animate({
-    scrollTop: $('#form_registrazione').offset().top - 145
-  },'slow');
-});
+function showRegistrationModal() {
+  document.getElementById('registrationModal').classList.add('show');
+}
 
-$( "#btnTappe" ).click(function() {
-  $('html,body').animate({
-    scrollTop: $('#tabellaTappe').offset().top - 100
-  },'slow');
-});
-
-// Vecchi scroll handlers (rimossi)
-$( "#scrollToCosa" ).click(function() {
-	  $('html,body').animate({
-    scrollTop: $('#cosa-si-festeggia').offset().top - 80
-  },'slow');
-});
-
-// Vecchi scroll handlers (rimossi)
-$( "#scrollToCosa" ).click(function() {
-	  $('html,body').animate({
-    scrollTop: $('#cosa-si-festeggia').offset().top - 80
-  },'slow');
-});
-
-$( "#scrollToPartecipa" ).click(function() {
-	  $('html,body').animate({
-    scrollTop: $('#form_registrazione').offset().top - 80
-  },'slow');
-});
-
-
-$( "#scrollToTappe" ).click(function() {
-  $('html,body').animate({
-    scrollTop: $('#tabellaTappe').offset().top - 80
-  },'slow');
-});
-
-
-
-setTimeout(() => {
-  if (document.getElementById('bnpartecipa')){
-  document.getElementById('bnpartecipa').click();
+// ============================================
+// SMOOTH SCROLL (senza jQuery)
+// ============================================
+function smoothScroll(targetId, offset = 100) {
+  const element = document.getElementById(targetId);
+  if (element) {
+    const targetPosition = element.offsetTop - offset;
+    window.scrollTo({
+      top: targetPosition,
+      behavior: 'smooth'
+    });
   }
-}, 1000);
+}
+
+// Bottoni di navigazione sotto il timer
+document.getElementById('btnCosa')?.addEventListener('click', () => {
+  smoothScroll('cosa-si-festeggia', 100);
+});
+
+document.getElementById('btnIscriviti')?.addEventListener('click', () => {
+  smoothScroll('form_registrazione', 145);
+});
+
+document.getElementById('btnTappe')?.addEventListener('click', () => {
+  smoothScroll('tabellaTappe', 100);
+});
+
+
   let btnpart=0 
   function AddInputNome() {
     if (btnpart==0){
@@ -2304,33 +2436,40 @@ setTimeout(() => {
 function AggiungiEmail(){
  let email=document.forms["FormEmail"]["inputEmail"].value
  if (email!=""){
-  $.ajax({
-              url: "./functions/AddEmail.php",
-              method:'GET',
-              data: {"email":email},
-
-              success: function(result){
-                if (result == "true"){
-                   $('#exampleModalCenter').modal("show")
-                }else{
-                  $('#emailEs').html("&nbsp&nbsp&nbspEmail già esistente.")
-                }
-              }});  
+  fetch("./functions/AddEmail.php?email=" + encodeURIComponent(email))
+    .then(response => response.text())
+    .then(result => {
+      if (result == "true"){
+        showRegistrationModal();
+      } else {
+        const emailEs = document.getElementById('emailEs');
+        if (emailEs) {
+          emailEs.innerHTML = "&nbsp;&nbsp;&nbsp;Email già esistente.";
+        }
+      }
+    })
+    .catch(error => console.error('Errore:', error));
  }
 }
 
 function GetPartecipanti(){
 if (getpart==0){
-  $.ajax({
-              url: "./functions/GetPartecipanti.php",
-              success: function(result){
-                $("#partecipanti").html(result);
-              }}); 
+  fetch("./functions/GetPartecipanti.php")
+    .then(response => response.text())
+    .then(result => {
+      const partecipanti = document.getElementById('partecipanti');
+      if (partecipanti) {
+        partecipanti.innerHTML = result;
+      }
+    })
+    .catch(error => console.error('Errore:', error));
   getpart=1
-
 }else{
   getpart=0
-  $("#partecipanti").html("");
+  const partecipanti = document.getElementById('partecipanti');
+  if (partecipanti) {
+    partecipanti.innerHTML = "";
+  }
 } 
 
 }
