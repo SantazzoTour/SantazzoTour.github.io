@@ -1733,31 +1733,6 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
   </div>
 </div>
 
-<!-- Modal Admin Login -->
-<div class="modal fade" id="adminLoginModal" tabindex="-1" role="dialog">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content" style="border-radius: 25px; border: none; overflow: hidden;">
-      <div class="modal-header" style="background: linear-gradient(135deg, var(--party-purple), var(--party-pink)); color: white; border: none;">
-        <h5 class="modal-title" style="font-family: 'Bangers', cursive; font-size: 1.8rem; letter-spacing: 2px;">
-          🔐 LOGIN AMMINISTRATORE
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white; opacity: 1;">
-          <span aria-hidden="true" style="font-size: 2rem;">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" style="padding: 2rem;">
-        <input type="password" id="adminPassword" class="form-control" placeholder="Password amministratore" style="padding: 1rem; border-radius: 10px; font-size: 1.1rem; text-align: center; margin-bottom: 1rem;">
-        <button onclick="checkAdminPassword()" class="btn btn-modern" style="width: 100%; padding: 1rem !important;">
-          ✅ ACCEDI
-        </button>
-        <p id="adminError" style="color: #ff6b6b; text-align: center; margin-top: 1rem; display: none; font-weight: 600;">
-          ❌ Password errata!
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
 <style>
 /* Animazione per le risposte in arrivo */
 @keyframes slideInAnswer {
@@ -2014,10 +1989,24 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Chiudi modal cliccando fuori
-document.getElementById('adminLoginModal')?.addEventListener('click', (e) => {
-  if (e.target.id === 'adminLoginModal') {
-    closeAdminModal();
+// Chiudi modal cliccando fuori (quando DOM è pronto)
+window.addEventListener('load', () => {
+  const adminModal = document.getElementById('adminLoginModal');
+  if (adminModal) {
+    adminModal.addEventListener('click', (e) => {
+      if (e.target.id === 'adminLoginModal') {
+        closeAdminModal();
+      }
+    });
+  }
+  
+  const regModal = document.getElementById('registrationModal');
+  if (regModal) {
+    regModal.addEventListener('click', (e) => {
+      if (e.target.id === 'registrationModal') {
+        closeRegistrationModal();
+      }
+    });
   }
 });
 
@@ -2543,6 +2532,25 @@ if (getpart==0){
 
 
   </script>
+
+<!-- Modal Admin Login (Custom senza Bootstrap) -->
+<div class="modal-overlay" id="adminLoginModal">
+  <div class="modal-box">
+    <div class="modal-header-custom">
+      <h5>🔐 LOGIN AMMINISTRATORE</h5>
+      <button class="modal-close" onclick="closeAdminModal()">&times;</button>
+    </div>
+    <div class="modal-body-custom">
+      <input type="password" id="adminPassword" placeholder="Password amministratore">
+      <button onclick="checkAdminPassword()" class="btn btn-modern" style="width: 100%; padding: 1rem !important;">
+        ✅ ACCEDI
+      </button>
+      <p id="adminError" class="modal-error">
+        ❌ Password errata!
+      </p>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
