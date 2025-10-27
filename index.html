@@ -1620,6 +1620,13 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
   </div>
 </div>
 
+<!-- Pulsante Admin Login (SEMPRE VISIBILE) -->
+<div class="container" style="text-align: center; margin: 2rem auto;">
+  <button onclick="showAdminLogin()" id="adminLoginBtn" class="btn" style="background: rgba(0,0,0,0.1); border: 2px dashed rgba(0,0,0,0.3); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.9rem; color: #666; cursor: pointer;">
+    🔐 Admin
+  </button>
+</div>
+
 <!-- SEZIONE QUIZ TAPPE -->
 <div class="container" id="quizSection" style="margin-top: 4rem; margin-bottom: 3rem; display: none;">
   <div class="section-title">
@@ -1734,13 +1741,6 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
     </div>
   </div>
 
-  <!-- Pulsante Admin Login -->
-  <div style="text-align: center; margin-top: 2rem;">
-    <button onclick="showAdminLogin()" id="adminLoginBtn" class="btn" style="background: rgba(0,0,0,0.1); border: 2px dashed rgba(0,0,0,0.3); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.9rem; color: #666;">
-      🔐 Admin
-    </button>
-  </div>
-  
   <!-- Pannello di controllo Admin (visibile solo dopo login) -->
   <div id="adminControls" style="display: none; text-align: center; margin-top: 1.5rem; padding: 1.5rem; background: rgba(131, 56, 236, 0.1); border-radius: 15px; border: 2px dashed var(--party-purple);">
     <h5 style="font-family: 'Bangers', cursive; font-size: 1.3rem; color: var(--party-purple); margin-bottom: 1rem;">
@@ -1994,7 +1994,6 @@ function checkAdminPassword() {
     closeAdminModal();
     document.getElementById('adminPanel').style.display = 'block';
     document.getElementById('participantPanel').style.display = 'none';
-    document.getElementById('adminLoginBtn').style.display = 'none';
     document.getElementById('adminControls').style.display = 'block';
     
     // Mostra automaticamente la sezione quiz all'admin
@@ -2005,6 +2004,11 @@ function checkAdminPassword() {
     
     // Carica lo stato del quiz da Firebase
     loadQuizVisibilityState();
+    
+    // Scroll alla sezione quiz
+    setTimeout(() => {
+      smoothScroll('quizSection', 20);
+    }, 300);
   } else {
     document.getElementById('adminError').style.display = 'block';
     setTimeout(() => {
@@ -2018,7 +2022,7 @@ function logoutAdmin() {
     // Nascondi pannelli admin
     document.getElementById('adminPanel').style.display = 'none';
     document.getElementById('adminControls').style.display = 'none';
-    document.getElementById('adminLoginBtn').style.display = 'block';
+    // NON nascondere il bottone Admin - è sempre visibile ora
     
     // Mostra pannello partecipanti
     document.getElementById('participantPanel').style.display = 'block';
@@ -2031,6 +2035,9 @@ function logoutAdmin() {
     // Reset
     currentQuizData = null;
     quizAnswers = [];
+    
+    // Scroll in alto
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }
 
@@ -2477,10 +2484,13 @@ function showRegistrationModal() {
 // ============================================
 // SMOOTH SCROLL (senza jQuery)
 // ============================================
-function smoothScroll(targetId, offset = 100) {
+function smoothScroll(targetId, offset = 80) {
   const element = document.getElementById(targetId);
   if (element) {
-    const targetPosition = element.offsetTop - offset;
+    const navbar = document.querySelector('.navbar');
+    const navbarHeight = navbar ? navbar.offsetHeight : 60;
+    const targetPosition = element.getBoundingClientRect().top + window.pageYOffset - navbarHeight - offset;
+    
     window.scrollTo({
       top: targetPosition,
       behavior: 'smooth'
@@ -2490,19 +2500,19 @@ function smoothScroll(targetId, offset = 100) {
 
 // Bottoni di navigazione sotto il timer
 document.getElementById('btnCosa')?.addEventListener('click', () => {
-  smoothScroll('cosa-si-festeggia', 100);
+  smoothScroll('cosa-si-festeggia', 20);
 });
 
 document.getElementById('btnIscriviti')?.addEventListener('click', () => {
-  smoothScroll('form_registrazione', 145);
+  smoothScroll('form_registrazione', 20);
 });
 
 document.getElementById('btnTappe')?.addEventListener('click', () => {
-  smoothScroll('tabellaTappe', 100);
+  smoothScroll('tabellaTappe', 20);
 });
 
 document.getElementById('btnQuiz')?.addEventListener('click', () => {
-  smoothScroll('quizSection', 100);
+  smoothScroll('quizSection', 20);
 });
 
 // ============================================
