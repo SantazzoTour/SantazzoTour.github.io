@@ -1,15 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-	<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-P52FH3SCQG"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-P52FH3SCQG');
-</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9586403432182724"
      crossorigin="anonymous"></script>
   <meta charset="UTF-8">
@@ -1142,6 +1133,10 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
 </head>
 
 <body onscroll="percentuale()">
@@ -1631,6 +1626,506 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
     </div>
   </div>
 </div>
+
+<!-- SEZIONE QUIZ TAPPE -->
+<div class="container" style="margin-top: 4rem; margin-bottom: 3rem;">
+  <div class="section-title">
+    <span class="emoji-float">🎯</span> QUIZ DELLE TAPPE <span class="emoji-float">🏆</span>
+  </div>
+
+  <!-- Pannello Amministratore (Password Protected) -->
+  <div id="adminPanel" style="display: none;">
+    <div class="info-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+      <h4 style="font-family: 'Bangers', cursive; font-size: 1.8rem; text-align: center; margin-bottom: 1.5rem;">
+        👑 PANNELLO AMMINISTRATORE 👑
+      </h4>
+      
+      <div style="background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem;">
+        <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">📍 Seleziona Tappa:</label>
+        <select id="adminTappaSelect" class="form-control" style="margin-bottom: 1rem; padding: 0.8rem; border-radius: 10px; font-size: 1rem;">
+          <option value="1">Tappa 1 - Mania</option>
+          <option value="2">Tappa 2 - Fashion e Oratorio Villa</option>
+          <option value="3">Tappa 3 - Melograno</option>
+          <option value="4">Tappa 4 - Oratorio Cisano</option>
+          <option value="5">Tappa 5 - Abbazia</option>
+          <option value="6">Tappa 6 - Logos</option>
+          <option value="7">Tappa 7 - Pagani</option>
+          <option value="8">Tappa 8 - Mania (Gran Finale)</option>
+        </select>
+
+        <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">❓ Inserisci Domanda:</label>
+        <textarea id="adminQuestion" class="form-control" rows="3" placeholder="Es: Quale è il fiume che attraversa Cisano?" style="margin-bottom: 1rem; padding: 0.8rem; border-radius: 10px; font-size: 1rem;"></textarea>
+
+        <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">✅ Risposta Corretta:</label>
+        <input type="text" id="adminAnswer" class="form-control" placeholder="Es: Brembo" style="margin-bottom: 1.5rem; padding: 0.8rem; border-radius: 10px; font-size: 1rem;">
+
+        <button onclick="startQuiz()" class="btn btn-modern" style="width: 100%; padding: 1rem !important; font-size: 1.2rem !important;">
+          🚀 AVVIA QUIZ
+        </button>
+      </div>
+
+      <div id="activeQuizAdmin" style="display: none; background: rgba(0,0,0,0.2); padding: 1.5rem; border-radius: 15px; margin-top: 1rem;">
+        <h5 style="font-family: 'Bangers', cursive; font-size: 1.5rem; text-align: center; margin-bottom: 1rem;">
+          ⏱️ QUIZ IN CORSO
+        </h5>
+        <div id="adminQuestionDisplay" style="background: white; color: #333; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; font-weight: 600; font-size: 1.1rem; text-align: center;"></div>
+        
+        <h6 style="font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.8rem;">📊 RISPOSTE RICEVUTE:</h6>
+        <div id="answersReceived" style="background: white; color: #333; padding: 1rem; border-radius: 10px; max-height: 300px; overflow-y: auto;">
+          <p style="text-align: center; opacity: 0.6;">In attesa di risposte...</p>
+        </div>
+
+        <button onclick="endQuiz()" class="btn btn-modern" style="width: 100%; margin-top: 1rem; background: linear-gradient(135deg, #ff6b6b, #ee5a6f) !important;">
+          🛑 TERMINA QUIZ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interfaccia Partecipante -->
+  <div id="participantPanel">
+    <!-- Login Partecipante -->
+    <div id="participantLogin" class="info-card">
+      <h4 style="font-family: 'Bangers', cursive; font-size: 1.8rem; text-align: center; margin-bottom: 1.5rem;">
+        🎮 ENTRA NEL QUIZ!
+      </h4>
+      <div style="max-width: 400px; margin: 0 auto;">
+        <input type="text" id="participantName" class="form-control" placeholder="Inserisci il tuo nome" style="margin-bottom: 1rem; padding: 1rem; border-radius: 10px; font-size: 1.1rem; text-align: center;">
+        <button onclick="joinQuiz()" class="btn btn-modern" style="width: 100%; padding: 1rem !important; font-size: 1.2rem !important;">
+          ✅ ENTRA
+        </button>
+      </div>
+    </div>
+
+    <!-- Quiz Attivo per Partecipante -->
+    <div id="participantQuiz" style="display: none;">
+      <div class="info-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <div id="waitingForQuestion" style="text-align: center;">
+          <h4 style="font-family: 'Bangers', cursive; font-size: 1.8rem; margin-bottom: 1rem;">
+            ⏳ IN ATTESA DELLA DOMANDA...
+          </h4>
+          <p style="font-size: 1.1rem; opacity: 0.9;">
+            Ciao <span id="displayParticipantName" style="font-weight: 700; color: var(--accent-color);"></span>! 👋
+          </p>
+          <div style="font-size: 3rem; margin: 2rem 0;">
+            <span class="emoji-float">🍺</span>
+            <span class="emoji-float" style="animation-delay: 0.3s;">🎯</span>
+            <span class="emoji-float" style="animation-delay: 0.6s;">🏆</span>
+          </div>
+        </div>
+
+        <div id="activeQuestion" style="display: none;">
+          <div style="background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: 15px; margin-bottom: 1rem; text-align: center;">
+            <h5 style="font-family: 'Bangers', cursive; font-size: 1.3rem; margin-bottom: 1rem;">
+              📍 TAPPA <span id="currentTappaNumber"></span>
+            </h5>
+            <div id="questionDisplay" style="background: white; color: #333; padding: 1.5rem; border-radius: 10px; font-size: 1.2rem; font-weight: 600; margin-bottom: 1.5rem;"></div>
+            
+            <input type="text" id="participantAnswer" class="form-control" placeholder="La tua risposta..." style="margin-bottom: 1rem; padding: 1rem; border-radius: 10px; font-size: 1.1rem; text-align: center;">
+            
+            <button onclick="submitAnswer()" id="submitBtn" class="btn btn-modern" style="width: 100%; padding: 1rem !important; font-size: 1.2rem !important;">
+              🚀 INVIA RISPOSTA
+            </button>
+          </div>
+
+          <div id="answerFeedback" style="display: none; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 15px; text-align: center; margin-top: 1rem;">
+            <h5 id="feedbackTitle" style="font-family: 'Bangers', cursive; font-size: 1.8rem; margin-bottom: 0.5rem;"></h5>
+            <p id="feedbackText" style="font-size: 1.1rem; margin: 0;"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pulsante Admin Login -->
+  <div style="text-align: center; margin-top: 2rem;">
+    <button onclick="showAdminLogin()" id="adminLoginBtn" class="btn" style="background: rgba(0,0,0,0.1); border: 2px dashed rgba(0,0,0,0.3); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.9rem; color: #666;">
+      🔐 Admin
+    </button>
+  </div>
+</div>
+
+<!-- Modal Admin Login -->
+<div class="modal fade" id="adminLoginModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 25px; border: none; overflow: hidden;">
+      <div class="modal-header" style="background: linear-gradient(135deg, var(--party-purple), var(--party-pink)); color: white; border: none;">
+        <h5 class="modal-title" style="font-family: 'Bangers', cursive; font-size: 1.8rem; letter-spacing: 2px;">
+          🔐 LOGIN AMMINISTRATORE
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: white; opacity: 1;">
+          <span aria-hidden="true" style="font-size: 2rem;">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 2rem;">
+        <input type="password" id="adminPassword" class="form-control" placeholder="Password amministratore" style="padding: 1rem; border-radius: 10px; font-size: 1.1rem; text-align: center; margin-bottom: 1rem;">
+        <button onclick="checkAdminPassword()" class="btn btn-modern" style="width: 100%; padding: 1rem !important;">
+          ✅ ACCEDI
+        </button>
+        <p id="adminError" style="color: #ff6b6b; text-align: center; margin-top: 1rem; display: none; font-weight: 600;">
+          ❌ Password errata!
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Animazione per le risposte in arrivo */
+@keyframes slideInAnswer {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.answer-item {
+  animation: slideInAnswer 0.3s ease;
+  padding: 0.8rem;
+  margin-bottom: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border-left: 4px solid var(--party-purple);
+}
+
+.answer-item.correct {
+  border-left-color: #28a745;
+  background: #d4edda;
+}
+
+.answer-item.incorrect {
+  border-left-color: #dc3545;
+  background: #f8d7da;
+}
+
+/* Pulse per quiz attivo */
+@keyframes pulse-quiz {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(131, 56, 236, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 20px rgba(131, 56, 236, 0);
+  }
+}
+
+.quiz-active {
+  animation: pulse-quiz 2s infinite;
+}
+</style>
+
+<script>
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBpNwx80lYHvV0rq7l-XCKSJUiyqWySC0c",
+  authDomain: "santazzo-quiz.firebaseapp.com",
+  databaseURL: "https://santazzo-quiz-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "santazzo-quiz",
+  storageBucket: "santazzo-quiz.firebasestorage.app",
+  messagingSenderId: "712685335775",
+  appId: "1:712685335775:web:f44157b336900427e3656a"
+};
+
+// Inizializza Firebase
+let database;
+try {
+  firebase.initializeApp(firebaseConfig);
+  database = firebase.database();
+  console.log("✅ Firebase connesso!");
+} catch (error) {
+  console.error("❌ Errore Firebase:", error);
+  alert("⚠️ Configura Firebase! Vedi le istruzioni nel codice.");
+}
+
+// ============================================
+// VARIABILI GLOBALI
+// ============================================
+const ADMIN_PASSWORD = "santazzo2025"; // Cambia questa password!
+let currentQuizData = null;
+let participantNameGlobal = null;
+let quizAnswers = [];
+let quizListener = null;
+
+// ============================================
+// FUNZIONI ADMIN
+// ============================================
+function showAdminLogin() {
+  $('#adminLoginModal').modal('show');
+}
+
+function checkAdminPassword() {
+  const password = document.getElementById('adminPassword').value;
+  if (password === ADMIN_PASSWORD) {
+    $('#adminLoginModal').modal('hide');
+    document.getElementById('adminPanel').style.display = 'block';
+    document.getElementById('participantPanel').style.display = 'none';
+    document.getElementById('adminLoginBtn').style.display = 'none';
+    document.getElementById('adminPassword').value = '';
+    
+    // Inizia ad ascoltare le risposte
+    listenToAnswers();
+  } else {
+    document.getElementById('adminError').style.display = 'block';
+    setTimeout(() => {
+      document.getElementById('adminError').style.display = 'none';
+    }, 3000);
+  }
+}
+
+function startQuiz() {
+  const tappa = document.getElementById('adminTappaSelect').value;
+  const question = document.getElementById('adminQuestion').value.trim();
+  const answer = document.getElementById('adminAnswer').value.trim();
+
+  if (!question || !answer) {
+    alert('⚠️ Inserisci sia la domanda che la risposta!');
+    return;
+  }
+
+  if (!database) {
+    alert('❌ Firebase non configurato! Controlla la console.');
+    return;
+  }
+
+  currentQuizData = {
+    tappa: tappa,
+    question: question,
+    answer: answer.toLowerCase(),
+    active: true,
+    startTime: Date.now()
+  };
+
+  quizAnswers = [];
+
+  // Salva il quiz su Firebase
+  database.ref('currentQuiz').set(currentQuizData)
+    .then(() => {
+      // Pulisci le vecchie risposte
+      return database.ref('answers').remove();
+    })
+    .then(() => {
+      // Update admin UI
+      document.getElementById('adminQuestionDisplay').textContent = question;
+      document.getElementById('activeQuizAdmin').style.display = 'block';
+      document.getElementById('answersReceived').innerHTML = '<p style="text-align: center; opacity: 0.6;">In attesa di risposte...</p>';
+      
+      alert('✅ Quiz avviato per la Tappa ' + tappa + '! 🚀');
+    })
+    .catch((error) => {
+      console.error('Errore Firebase:', error);
+      alert('❌ Errore nell\'avvio del quiz: ' + error.message);
+    });
+}
+
+function endQuiz() {
+  if (!currentQuizData || !database) return;
+
+  // Disattiva il quiz su Firebase
+  database.ref('currentQuiz/active').set(false)
+    .then(() => {
+      currentQuizData.active = false;
+
+      // Show results
+      const winner = quizAnswers.find(a => a.correct);
+      let resultHTML = '<div style="background: rgba(255,215,0,0.2); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; text-align: center;">';
+      
+      if (winner) {
+        resultHTML += `<h5 style="font-family: 'Bangers', cursive; color: #ffd700; font-size: 1.5rem;">🏆 VINCITORE: ${winner.name}</h5>`;
+        resultHTML += `<p>Tempo: ${((winner.timestamp - currentQuizData.startTime) / 1000).toFixed(2)}s</p>`;
+      } else {
+        resultHTML += '<h5 style="font-family: \'Bangers\', cursive; font-size: 1.3rem;">❌ Nessuna risposta corretta</h5>';
+      }
+      resultHTML += '</div>';
+
+      // Show all answers
+      resultHTML += '<div style="max-height: 200px; overflow-y: auto;">';
+      quizAnswers.forEach(answer => {
+        resultHTML += `
+          <div class="answer-item ${answer.correct ? 'correct' : 'incorrect'}">
+            <strong>${answer.name}:</strong> ${answer.answer}
+            ${answer.correct ? '✅' : '❌'}
+            <small style="display: block; opacity: 0.7; margin-top: 0.2rem;">
+              ${((answer.timestamp - currentQuizData.startTime) / 1000).toFixed(2)}s
+            </small>
+          </div>
+        `;
+      });
+      resultHTML += '</div>';
+
+      document.getElementById('answersReceived').innerHTML = resultHTML;
+
+      setTimeout(() => {
+        document.getElementById('activeQuizAdmin').style.display = 'none';
+        document.getElementById('adminQuestion').value = '';
+        document.getElementById('adminAnswer').value = '';
+        currentQuizData = null;
+        quizAnswers = [];
+      }, 10000);
+    })
+    .catch((error) => {
+      console.error('Errore Firebase:', error);
+      alert('❌ Errore nella chiusura del quiz: ' + error.message);
+    });
+}
+
+function listenToAnswers() {
+  if (!database) return;
+
+  // Ascolta le nuove risposte in tempo reale
+  database.ref('answers').on('child_added', (snapshot) => {
+    const answer = snapshot.val();
+    if (answer && currentQuizData && currentQuizData.active) {
+      quizAnswers.push(answer);
+      quizAnswers.sort((a, b) => a.timestamp - b.timestamp); // Ordina per tempo
+      updateAdminAnswers();
+    }
+  });
+}
+
+// ============================================
+// FUNZIONI PARTECIPANTE
+// ============================================
+function joinQuiz() {
+  const name = document.getElementById('participantName').value.trim();
+  if (!name) {
+    alert('⚠️ Inserisci il tuo nome!');
+    return;
+  }
+
+  if (!database) {
+    alert('❌ Firebase non configurato! Controlla la console.');
+    return;
+  }
+
+  participantNameGlobal = name;
+  document.getElementById('displayParticipantName').textContent = name;
+  document.getElementById('participantLogin').style.display = 'none';
+  document.getElementById('participantQuiz').style.display = 'block';
+
+  // Ascolta i cambiamenti del quiz in tempo reale
+  listenToQuizUpdates();
+}
+
+function submitAnswer() {
+  if (!currentQuizData || !currentQuizData.active || !database) return;
+
+  const answer = document.getElementById('participantAnswer').value.trim();
+  if (!answer) {
+    alert('⚠️ Inserisci una risposta!');
+    return;
+  }
+
+  const isCorrect = answer.toLowerCase() === currentQuizData.answer;
+  const answerData = {
+    name: participantNameGlobal,
+    answer: answer,
+    correct: isCorrect,
+    timestamp: Date.now()
+  };
+
+  // Disabilita il pulsante immediatamente
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('participantAnswer').disabled = true;
+
+  // Salva la risposta su Firebase
+  database.ref('answers').push(answerData)
+    .then(() => {
+      // Conta quante risposte corrette ci sono già
+      return database.ref('answers').orderByChild('correct').equalTo(true).once('value');
+    })
+    .then((snapshot) => {
+      const correctAnswers = [];
+      snapshot.forEach((child) => {
+        correctAnswers.push(child.val());
+      });
+      correctAnswers.sort((a, b) => a.timestamp - b.timestamp);
+      
+      // Show feedback
+      const feedback = document.getElementById('answerFeedback');
+      const feedbackTitle = document.getElementById('feedbackTitle');
+      const feedbackText = document.getElementById('feedbackText');
+
+      if (isCorrect) {
+        const position = correctAnswers.findIndex(a => a.name === participantNameGlobal && a.timestamp === answerData.timestamp) + 1;
+        feedbackTitle.textContent = position === 1 ? '🏆 HAI VINTO!' : '✅ RISPOSTA CORRETTA!';
+        feedbackTitle.style.color = '#28a745';
+        feedbackText.textContent = position === 1 ? 'Sei il primo! 🎉' : `Posizione: ${position}°`;
+      } else {
+        feedbackTitle.textContent = '❌ RISPOSTA ERRATA';
+        feedbackTitle.style.color = '#dc3545';
+        feedbackText.textContent = 'Riprova alla prossima tappa!';
+      }
+
+      feedback.style.display = 'block';
+    })
+    .catch((error) => {
+      console.error('Errore Firebase:', error);
+      alert('❌ Errore nell\'invio della risposta: ' + error.message);
+      document.getElementById('submitBtn').disabled = false;
+      document.getElementById('participantAnswer').disabled = false;
+    });
+}
+
+function listenToQuizUpdates() {
+  if (!database) return;
+
+  // Ascolta i cambiamenti del quiz in tempo reale
+  database.ref('currentQuiz').on('value', (snapshot) => {
+    const quiz = snapshot.val();
+    if (quiz && quiz.active) {
+      currentQuizData = quiz;
+      showQuestionToParticipant();
+    } else {
+      // Quiz terminato o non attivo
+      document.getElementById('waitingForQuestion').style.display = 'block';
+      document.getElementById('activeQuestion').style.display = 'none';
+      currentQuizData = null;
+    }
+  });
+}
+
+function showQuestionToParticipant() {
+  document.getElementById('waitingForQuestion').style.display = 'none';
+  document.getElementById('activeQuestion').style.display = 'block';
+  document.getElementById('currentTappaNumber').textContent = currentQuizData.tappa;
+  document.getElementById('questionDisplay').textContent = currentQuizData.question;
+  document.getElementById('participantAnswer').value = '';
+  document.getElementById('participantAnswer').disabled = false;
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('answerFeedback').style.display = 'none';
+}
+
+function updateAdminAnswers() {
+  if (!document.getElementById('adminPanel') || document.getElementById('adminPanel').style.display === 'none') return;
+
+  let html = '';
+  quizAnswers.forEach((answer, index) => {
+    html += `
+      <div class="answer-item ${answer.correct ? 'correct' : 'incorrect'}">
+        <strong>#${index + 1} - ${answer.name}:</strong> ${answer.answer}
+        ${answer.correct ? '✅ CORRETTO' : '❌'}
+        <small style="opacity: 0.7; display: block; margin-top: 0.3rem;">
+          ${((answer.timestamp - currentQuizData.startTime) / 1000).toFixed(2)}s
+        </small>
+      </div>
+    `;
+  });
+
+  document.getElementById('answersReceived').innerHTML = html || '<p style="text-align: center; opacity: 0.6;">In attesa di risposte...</p>';
+}
+
+// ============================================
+// INIT: Controlla connessione Firebase all'avvio
+// ============================================
+window.addEventListener('load', () => {
+  if (!database) {
+    console.warn('⚠️ Firebase non configurato. Segui le istruzioni nel codice per configurarlo.');
+  }
+});
+</script>
 
 <!-- Footer Divertente -->
 <footer style="background: linear-gradient(135deg, #1a1a2e, #16213e); color: white; padding: 2rem 1rem; margin-top: 3rem; text-align: center;">
