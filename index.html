@@ -147,13 +147,13 @@
         #f0b429 40%,     /* Birra ambrata */
         #e8a614 70%,     /* Birra più scura */
         #d89b0d 100%);   /* Fondo scuro */
-      min-height: 100vh;
+      min-height: 80vh;
       display: flex;
       align-items: flex-start;
       justify-content: center;
       position: relative;
       overflow: hidden;
-      padding: 75px 13px 30px;
+      padding: 65px 13px 30px;
     }
 
     /* Desktop parallax effect */
@@ -275,7 +275,7 @@
 
     #titolo {
       font-family: 'Bangers', cursive;
-      font-size: 2.3rem;
+      font-size: 1.3rem;
       background: linear-gradient(45deg, var(--beer-gold), var(--accent-color), var(--beer-gold));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -792,6 +792,7 @@
       overflow: hidden;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
       position: relative;
+      height: 497px;
     }
 
     .embed-responsive iframe {
@@ -831,6 +832,7 @@
       transition: all 0.3s ease !important;
       position: relative;
       overflow: hidden;
+      color:white;
     }
 
     /* Desktop buttons */
@@ -1425,7 +1427,7 @@ if (document.readyState === 'loading') {
 -->
 	
 <div class="section-title" id="cosa-si-festeggia">
-  <span class="emoji-float">🎊</span> COSA SI FESTEGGIA <span class="emoji-float">🎊</span>
+   COSA SI FESTEGGIA
 </div>
 
 <div class="info-card">
@@ -1483,10 +1485,9 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
     <!-- Sezione per la tabella dei partecipanti, nascosta inizialmente -->
     <div id="tableContainer" style="display: none; margin-top: 20px; background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 800px; margin-left: auto; margin-right: auto;">
       <h4 style="text-align: center; font-family: 'Bangers', cursive; font-size: 2rem; color: var(--party-purple); margin-bottom: 1.5rem; letter-spacing: 2px; line-height: 1.3;">
-        🎊 I SANTAZZARI 2025 🎊
+         I SANTAZZARI 2025
       </h4>
-      <div style="max-height: 500px; overflow-y: auto; border-radius: 15px;">
-        <table class="table table-modern" style="margin-bottom: 0;">
+        <table class="table table-modern" style="margin-bottom: 0;width: 100%;">
           <thead style="position: sticky; top: 0; z-index: 10;">
             <tr>
               <th style="text-align: center; padding: 1.2rem !important; font-size: 1.1rem;">👤 Nome</th>
@@ -1496,7 +1497,6 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
             <!-- I dati dei partecipanti saranno caricati qui -->
           </tbody>
         </table>
-      </div>
     </div>
 
 
@@ -1544,7 +1544,7 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
 
 <div class="container" id="tabellaTappe" >
   <div class="section-title" style="margin-top: 2rem;">
-    <span class="emoji-float">🗺️</span> LE TAPPE <span class="emoji-float">🍻</span>
+     LE TAPPE 
   </div>
 
   <div style="text-align: center; margin: 2rem 0;">
@@ -1620,7 +1620,7 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
 <!-- SEZIONE QUIZ TAPPE -->
 <div class="container" style="margin-top: 4rem; margin-bottom: 3rem;">
   <div class="section-title">
-    <span class="emoji-float">🎯</span> QUIZ DELLE TAPPE <span class="emoji-float">🏆</span>
+     QUIZ DELLE TAPPE
   </div>
 
   <!-- Pannello Amministratore (Password Protected) -->
@@ -1719,8 +1719,12 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
           </div>
 
           <div id="answerFeedback" style="display: none; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 15px; text-align: center; margin-top: 1rem;">
-            <h5 id="feedbackTitle" style="font-family: 'Bangers', cursive; font-size: 1.8rem; margin-bottom: 0.5rem;"></h5>
-            <p id="feedbackText" style="font-size: 1.1rem; margin: 0;"></p>
+            <h5 style="font-family: 'Bangers', cursive; font-size: 1.8rem; margin-bottom: 0.5rem; color: #ffd23f;">
+              ✅ RISPOSTA INVIATA!
+            </h5>
+            <p style="font-size: 1.1rem; margin: 0; color: white;">
+              L'organizzatore annuncerà il vincitore! 🏆
+            </p>
           </div>
         </div>
       </div>
@@ -1750,21 +1754,22 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
 
 .answer-item {
   animation: slideInAnswer 0.3s ease;
-  padding: 0.8rem;
-  margin-bottom: 0.5rem;
-  background: #f8f9fa;
-  border-radius: 10px;
-  border-left: 4px solid var(--party-purple);
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  background: white;
+  border-radius: 12px;
+  border-left: 5px solid var(--party-purple);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.answer-item:hover {
+  transform: translateX(5px);
 }
 
 .answer-item.correct {
   border-left-color: #28a745;
-  background: #d4edda;
-}
-
-.answer-item.incorrect {
-  border-left-color: #dc3545;
-  background: #f8d7da;
+  background: #f8fff9;
 }
 
     /* Pulse per quiz attivo */
@@ -2060,47 +2065,79 @@ function startQuiz() {
 function endQuiz() {
   if (!currentQuizData || !database) return;
 
+  // Conferma chiusura
+  if (!confirm('⚠️ Vuoi terminare il quiz? I partecipanti non potranno più rispondere.')) {
+    return;
+  }
+
   // Disattiva il quiz su Firebase
   database.ref('currentQuiz/active').set(false)
     .then(() => {
       currentQuizData.active = false;
 
-      // Show results
-      const winner = quizAnswers.find(a => a.correct);
-      let resultHTML = '<div style="background: rgba(255,215,0,0.2); padding: 1rem; border-radius: 10px; margin-bottom: 1rem; text-align: center;">';
-      
-      if (winner) {
-        resultHTML += `<h5 style="font-family: 'Bangers', cursive; color: #ffd700; font-size: 1.5rem;">🏆 VINCITORE: ${winner.name}</h5>`;
-        resultHTML += `<p>Tempo: ${((winner.timestamp - currentQuizData.startTime) / 1000).toFixed(2)}s</p>`;
-      } else {
-        resultHTML += '<h5 style="font-family: \'Bangers\', cursive; font-size: 1.3rem;">❌ Nessuna risposta corretta</h5>';
-      }
+      // Mostra tutte le risposte finali ordinate
+      let resultHTML = '<div style="background: rgba(255,215,0,0.3); padding: 1.2rem; border-radius: 12px; margin-bottom: 1rem; text-align: center; border: 2px solid #ffd700;">';
+      resultHTML += '<h5 style="font-family: \'Bangers\', cursive; color: #ff6b35; font-size: 1.6rem; margin-bottom: 0.5rem;">� QUIZ TERMINATO!</h5>';
+      resultHTML += '<p style="font-weight: 600; color: #555;">Annuncia tu il vincitore! 🎤</p>';
       resultHTML += '</div>';
 
-      // Show all answers
-      resultHTML += '<div style="max-height: 200px; overflow-y: auto;">';
-      quizAnswers.forEach(answer => {
-        resultHTML += `
-          <div class="answer-item ${answer.correct ? 'correct' : 'incorrect'}">
-            <strong>${answer.name}:</strong> ${answer.answer}
-            ${answer.correct ? '✅' : '❌'}
-            <small style="display: block; opacity: 0.7; margin-top: 0.2rem;">
-              ${((answer.timestamp - currentQuizData.startTime) / 1000).toFixed(2)}s
-            </small>
-          </div>
-        `;
-      });
-      resultHTML += '</div>';
+      // Trova le risposte corrette ordinate per tempo
+      const correctAnswers = quizAnswers.filter(a => a.correct).sort((a, b) => a.timestamp - b.timestamp);
+      
+      if (correctAnswers.length > 0) {
+        resultHTML += '<div style="background: #d4edda; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; border-left: 5px solid #28a745;">';
+        resultHTML += '<h6 style="font-weight: 700; color: #155724; margin-bottom: 0.8rem;">✅ RISPOSTE CORRETTE (ordine di arrivo):</h6>';
+        correctAnswers.forEach((answer, index) => {
+          const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}°`;
+          resultHTML += `
+            <div style="background: white; padding: 0.8rem; margin-bottom: 0.5rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <strong style="font-size: 1.1rem;">${medal} ${answer.name}</strong>
+                <div style="font-size: 0.95rem; color: #666; margin-top: 0.2rem;">💬 ${answer.answer}</div>
+              </div>
+              <div style="text-align: right; font-size: 0.9rem; color: #888;">
+                ⏱️ ${((answer.timestamp - currentQuizData.startTime) / 1000).toFixed(2)}s
+              </div>
+            </div>
+          `;
+        });
+        resultHTML += '</div>';
+      }
+
+      // Mostra risposte sbagliate
+      const wrongAnswers = quizAnswers.filter(a => !a.correct).sort((a, b) => a.timestamp - b.timestamp);
+      if (wrongAnswers.length > 0) {
+        resultHTML += '<div style="background: #f8d7da; padding: 1rem; border-radius: 10px; border-left: 5px solid #dc3545;">';
+        resultHTML += '<h6 style="font-weight: 700; color: #721c24; margin-bottom: 0.8rem;">❌ RISPOSTE SBAGLIATE:</h6>';
+        resultHTML += '<div style="max-height: 250px; overflow-y: auto;">';
+        wrongAnswers.forEach((answer) => {
+          resultHTML += `
+            <div style="background: white; padding: 0.6rem; margin-bottom: 0.4rem; border-radius: 8px; font-size: 0.95rem;">
+              <strong>${answer.name}:</strong> ${answer.answer}
+              <span style="opacity: 0.6; margin-left: 0.5rem;">⏱️ ${((answer.timestamp - currentQuizData.startTime) / 1000).toFixed(2)}s</span>
+            </div>
+          `;
+        });
+        resultHTML += '</div></div>';
+      }
+
+      if (quizAnswers.length === 0) {
+        resultHTML += '<p style="text-align: center; opacity: 0.6; padding: 1rem;">Nessuna risposta ricevuta</p>';
+      }
 
       document.getElementById('answersReceived').innerHTML = resultHTML;
 
+      // Nascondi il pannello dopo 20 secondi
       setTimeout(() => {
-        document.getElementById('activeQuizAdmin').style.display = 'none';
-        document.getElementById('adminQuestion').value = '';
-        document.getElementById('adminAnswer').value = '';
-        currentQuizData = null;
-        quizAnswers = [];
-      }, 10000);
+        const confirmClose = confirm('✅ Vuoi chiudere il pannello quiz? (Puoi rimanere aperto per rivedere le risposte)');
+        if (confirmClose) {
+          document.getElementById('activeQuizAdmin').style.display = 'none';
+          document.getElementById('adminQuestion').value = '';
+          document.getElementById('adminAnswer').value = '';
+          currentQuizData = null;
+          quizAnswers = [];
+        }
+      }, 20000);
     })
     .catch((error) => {
       console.error('Errore Firebase:', error);
@@ -2170,32 +2207,8 @@ function submitAnswer() {
   // Salva la risposta su Firebase
   database.ref('answers').push(answerData)
     .then(() => {
-      // Conta quante risposte corrette ci sono già
-      return database.ref('answers').orderByChild('correct').equalTo(true).once('value');
-    })
-    .then((snapshot) => {
-      const correctAnswers = [];
-      snapshot.forEach((child) => {
-        correctAnswers.push(child.val());
-      });
-      correctAnswers.sort((a, b) => a.timestamp - b.timestamp);
-      
-      // Show feedback
+      // Mostra sempre lo stesso feedback (senza dire se è corretto)
       const feedback = document.getElementById('answerFeedback');
-      const feedbackTitle = document.getElementById('feedbackTitle');
-      const feedbackText = document.getElementById('feedbackText');
-
-      if (isCorrect) {
-        const position = correctAnswers.findIndex(a => a.name === participantNameGlobal && a.timestamp === answerData.timestamp) + 1;
-        feedbackTitle.textContent = position === 1 ? '🏆 HAI VINTO!' : '✅ RISPOSTA CORRETTA!';
-        feedbackTitle.style.color = '#28a745';
-        feedbackText.textContent = position === 1 ? 'Sei il primo! 🎉' : `Posizione: ${position}°`;
-      } else {
-        feedbackTitle.textContent = '❌ RISPOSTA ERRATA';
-        feedbackTitle.style.color = '#dc3545';
-        feedbackText.textContent = 'Riprova alla prossima tappa!';
-      }
-
       feedback.style.display = 'block';
     })
     .catch((error) => {
@@ -2240,13 +2253,17 @@ function updateAdminAnswers() {
 
   let html = '';
   quizAnswers.forEach((answer, index) => {
+    const timeInSeconds = ((answer.timestamp - currentQuizData.startTime) / 1000).toFixed(2);
     html += `
-      <div class="answer-item ${answer.correct ? 'correct' : 'incorrect'}">
-        <strong>#${index + 1} - ${answer.name}:</strong> ${answer.answer}
-        ${answer.correct ? '✅ CORRETTO' : '❌'}
-        <small style="opacity: 0.7; display: block; margin-top: 0.3rem;">
-          ${((answer.timestamp - currentQuizData.startTime) / 1000).toFixed(2)}s
-        </small>
+      <div class="answer-item ${answer.correct ? 'correct' : ''}">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem;">
+          <strong style="font-size: 1.1rem;">#${index + 1} - ${answer.name}</strong>
+          <span style="font-size: 0.9rem; opacity: 0.7;">⏱️ ${timeInSeconds}s</span>
+        </div>
+        <div style="font-size: 1.05rem; padding: 0.5rem; background: ${answer.correct ? '#d4edda' : '#f8d7da'}; border-radius: 8px; margin-top: 0.3rem;">
+          💬 <strong>Risposta:</strong> ${answer.answer}
+          ${answer.correct ? '<span style="color: #28a745; font-weight: 700; margin-left: 0.5rem;">✅ CORRETTA</span>' : '<span style="color: #dc3545; font-weight: 700; margin-left: 0.5rem;">❌ SBAGLIATA</span>'}
+        </div>
       </div>
     `;
   });
