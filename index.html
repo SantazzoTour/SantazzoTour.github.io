@@ -1465,48 +1465,22 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
   <div style="max-width: 600px; margin: 0 auto; background: rgba(255,255,255,0.95); padding: 2rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
     <form id="registrationForm" onsubmit="registraPartecipante(event)">
       
-      <!-- Nome -->
+      <!-- Nickname -->
       <div style="margin-bottom: 1.5rem;">
         <label style="display: block; font-weight: 600; color: #333; margin-bottom: 0.5rem; font-size: 1rem;">
-          👤 Nome e Cognome *
+          🎭 Il tuo Nickname *
         </label>
         <input 
           type="text" 
-          id="regNome" 
+          id="regNickname" 
           class="form-control" 
-          placeholder="Es: Mario Rossi" 
+          placeholder="Es: IlBarman, LaTequilera, MrSantazzo..." 
           required
-          style="width: 100%; padding: 0.9rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem;">
-      </div>
-
-      <!-- Email -->
-      <div style="margin-bottom: 1.5rem;">
-        <label style="display: block; font-weight: 600; color: #333; margin-bottom: 0.5rem; font-size: 1rem;">
-          📧 Email *
-        </label>
-        <input 
-          type="email" 
-          id="regEmail" 
-          class="form-control" 
-          placeholder="Es: mario.rossi@email.com" 
-          required
+          maxlength="30"
           style="width: 100%; padding: 0.9rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem;">
         <small style="color: #666; font-size: 0.85rem; margin-top: 0.3rem; display: block;">
-          Ti invieremo i dettagli dell'evento
+          Scegli un nome divertente! Max 30 caratteri.
         </small>
-      </div>
-
-      <!-- Telefono (opzionale) -->
-      <div style="margin-bottom: 1.5rem;">
-        <label style="display: block; font-weight: 600; color: #333; margin-bottom: 0.5rem; font-size: 1rem;">
-          📱 Telefono (opzionale)
-        </label>
-        <input 
-          type="tel" 
-          id="regTelefono" 
-          class="form-control" 
-          placeholder="Es: 333 1234567"
-          style="width: 100%; padding: 0.9rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem;">
       </div>
 
       <!-- Messaggio di errore -->
@@ -1547,8 +1521,7 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
         <table class="table table-modern" style="margin-bottom: 0; width: 100%;">
           <thead style="position: sticky; top: 0; z-index: 10;">
             <tr>
-              <th style="text-align: left; padding: 1.2rem !important; font-size: 1.1rem;">👤 Nome</th>
-              <th style="text-align: center; padding: 1.2rem !important; font-size: 1.1rem;">📅 Data</th>
+              <th style="text-align: left; padding: 1.2rem !important; font-size: 1.1rem;">🎭 Nickname</th>
             </tr>
           </thead>
           <tbody id="partecipantiBody">
@@ -1576,15 +1549,18 @@ function registraPartecipante(event) {
     return;
   }
   
-  const nome = document.getElementById('regNome').value.trim();
-  const email = document.getElementById('regEmail').value.trim().toLowerCase();
-  const telefono = document.getElementById('regTelefono').value.trim();
+  const nickname = document.getElementById('regNickname').value.trim();
   const submitBtn = document.getElementById('regSubmitBtn');
   const errorDiv = document.getElementById('regError');
   
   // Validazione
-  if (!nome || !email) {
-    showRegError('⚠️ Compila tutti i campi obbligatori!');
+  if (!nickname) {
+    showRegError('⚠️ Inserisci un nickname!');
+    return;
+  }
+  
+  if (nickname.length < 3) {
+    showRegError('⚠️ Il nickname deve essere lungo almeno 3 caratteri!');
     return;
   }
   
@@ -1593,20 +1569,19 @@ function registraPartecipante(event) {
   submitBtn.innerHTML = '<span style="font-size: 1.3em;">⏳</span> Registrazione in corso...';
   errorDiv.style.display = 'none';
   
-  // Controlla se l'email esiste già
-  database.ref('partecipanti').orderByChild('email').equalTo(email).once('value')
+  // Controlla se il nickname esiste già (case-insensitive)
+  database.ref('partecipanti').orderByChild('nicknameLower').equalTo(nickname.toLowerCase()).once('value')
     .then((snapshot) => {
       if (snapshot.exists()) {
-        // Email già registrata
-        showRegError('📧 Questa email è già registrata! Ogni persona può iscriversi una sola volta.');
+        // Nickname già preso
+        showRegError('🎭 Questo nickname è già stato scelto! Scegline un altro.');
         submitBtn.disabled = false;
         submitBtn.innerHTML = '<span style="font-size: 1.3em;">🎉</span> ISCRIVITI ORA!';
       } else {
         // Salva il nuovo partecipante
         const nuovoPartecipante = {
-          nome: nome,
-          email: email,
-          telefono: telefono || '',
+          nickname: nickname,
+          nicknameLower: nickname.toLowerCase(), // Per controllo duplicati case-insensitive
           timestamp: Date.now(),
           dataIscrizione: new Date().toISOString()
         };
@@ -1670,7 +1645,7 @@ function caricaPartecipanti() {
       
       if (!snapshot.exists()) {
         tableBody.innerHTML = 
-          '<tr><td colspan="2" style="text-align: center; padding: 2rem; opacity: 0.6;">Nessun partecipante ancora 🎭</td></tr>';
+          '<tr><td style="text-align: center; padding: 2rem; opacity: 0.6;">Nessun partecipante ancora 🎭</td></tr>';
         return;
       }
       
@@ -1685,34 +1660,21 @@ function caricaPartecipanti() {
       partecipanti.forEach((partecipante) => {
         const row = document.createElement('tr');
         
-        // Colonna Nome
-        const nomeCell = document.createElement('td');
-        nomeCell.textContent = partecipante.nome;
-        nomeCell.style.padding = '1rem';
-        nomeCell.style.fontWeight = '500';
+        // Colonna Nickname
+        const nicknameCell = document.createElement('td');
+        nicknameCell.textContent = partecipante.nickname;
+        nicknameCell.style.padding = '1rem';
+        nicknameCell.style.fontWeight = '600';
+        nicknameCell.style.fontSize = '1.05rem';
         
-        // Colonna Data
-        const dataCell = document.createElement('td');
-        const data = new Date(partecipante.timestamp);
-        dataCell.textContent = data.toLocaleDateString('it-IT', { 
-          day: '2-digit', 
-          month: '2-digit',
-          year: 'numeric'
-        });
-        dataCell.style.padding = '1rem';
-        dataCell.style.textAlign = 'center';
-        dataCell.style.opacity = '0.7';
-        dataCell.style.fontSize = '0.9rem';
-        
-        row.appendChild(nomeCell);
-        row.appendChild(dataCell);
+        row.appendChild(nicknameCell);
         tableBody.appendChild(row);
       });
     })
     .catch((error) => {
       console.error('Errore caricamento partecipanti:', error);
       document.getElementById('partecipantiBody').innerHTML = 
-        '<tr><td colspan="2" style="text-align: center; padding: 2rem; color: #ff6b6b;">❌ Errore nel caricamento</td></tr>';
+        '<tr><td style="text-align: center; padding: 2rem; color: #ff6b6b;">❌ Errore nel caricamento</td></tr>';
     });
 }
 
