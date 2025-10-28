@@ -1464,7 +1464,10 @@ if (document.readyState === 'loading') {
         <textarea id="adminQuestion" class="form-control" rows="3" placeholder="Es: Quale è il fiume che attraversa Cisano?" style="margin-bottom: 1rem; padding: 0.8rem; border-radius: 10px; font-size: 1rem;"></textarea>
 
         <label style="font-weight: 600; margin-bottom: 0.5rem; display: block;">✅ Risposta Corretta:</label>
-        <input type="text" id="adminAnswer" class="form-control" placeholder="Es: Brembo" style="margin-bottom: 1.5rem; padding: 0.8rem; border-radius: 10px; font-size: 1rem;">
+        <input type="text" id="adminAnswer" class="form-control" placeholder="Es: Brembo (per più risposte separale con virgola: Brembo, Fiume Brembo)" style="margin-bottom: 0.3rem; padding: 0.8rem; border-radius: 10px; font-size: 1rem;">
+        <small style="color: #666; font-size: 0.85rem; margin-bottom: 1.5rem; display: block;">
+          💡 Puoi inserire più risposte corrette separandole con la virgola
+        </small>
 
         <button onclick="startQuiz()" class="btn btn-modern" style="width: 100%; padding: 1rem !important; font-size: 1.2rem !important;">
           🚀 AVVIA QUIZ
@@ -1834,7 +1837,7 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
       <h4 style="text-align: center; font-family: 'Bangers', cursive; font-size: 2rem; color: var(--party-purple); margin-bottom: 1.5rem; letter-spacing: 2px; line-height: 1.3;">
        I SANTAZZARI 2025
       </h4>
-      <div style="max-height: 500px; overflow-y: auto; border-radius: 15px;">
+      <div>
         <table class="table table-modern" style="margin-bottom: 0; width: 100%;">
           <thead style="position: sticky; top: 0; z-index: 10;">
             <tr>
@@ -2286,9 +2289,9 @@ window.addEventListener('load', () => {
 function startQuiz() {
   const tappa = document.getElementById('adminTappaSelect').value;
   const question = document.getElementById('adminQuestion').value.trim();
-  const answer = document.getElementById('adminAnswer').value.trim();
+  const answerInput = document.getElementById('adminAnswer').value.trim();
 
-  if (!question || !answer) {
+  if (!question || !answerInput) {
     alert('⚠️ Inserisci sia la domanda che la risposta!');
     return;
   }
@@ -2298,10 +2301,14 @@ function startQuiz() {
     return;
   }
 
+  // Separa le risposte per virgola e normalizza
+  const answers = answerInput.split(',').map(a => a.trim().toLowerCase()).filter(a => a.length > 0);
+
   currentQuizData = {
     tappa: tappa,
     question: question,
-    answer: answer.toLowerCase(),
+    answer: answerInput.toLowerCase(), // Mantiene per compatibilità
+    answers: answers, // Array di risposte corrette
     active: true,
     startTime: Date.now()
   };
@@ -2466,7 +2473,18 @@ function submitAnswer() {
     return;
   }
 
-  const isCorrect = answer.toLowerCase() === currentQuizData.answer;
+  // Verifica se la risposta è corretta confrontando con tutte le risposte possibili
+  const userAnswerLower = answer.toLowerCase();
+  let isCorrect = false;
+  
+  if (currentQuizData.answers && Array.isArray(currentQuizData.answers)) {
+    // Usa l'array di risposte se disponibile
+    isCorrect = currentQuizData.answers.some(correctAnswer => userAnswerLower === correctAnswer);
+  } else {
+    // Fallback per compatibilità con vecchio formato
+    isCorrect = userAnswerLower === currentQuizData.answer;
+  }
+
   const answerData = {
     name: participantNameGlobal,
     answer: answer,
