@@ -695,6 +695,11 @@
       to { transform: rotate(360deg); }
     }
 
+    /* Nasconde la birra solo nella sezione "Entra nel quiz" */
+    #participantLogin.info-card::before {
+      display: none;
+    }
+
     .info-card p {
       font-size: 1.05rem;
       line-height: 1.75;
@@ -1752,7 +1757,7 @@ textarea.form-control {
 
 <div class="info-card" style="padding: 1rem;">
 <p style="text-align: justify;">
-   <b>San Tazzo è il pub crawl più famoso di Cisano Bergamasco!</b></br>
+   <b>San Tazzo è il pub crawl più famoso di Cisano Bergamasco!</b></br></br>
  Non è solo una data o un appuntamento annuale, San Tazzo è molto di più: un <b>credo</b>, un <b>sentimento</b>, un <b>popolo</b>. È il legame che unisce tante persone per un evento unico.
 <br><br>
 Come di consueto lo spirito e le modalità rimangono le medesime: si <b style="color: red">cammina</b> e si <b style="color: red">beve</b> facendo tappa nei locali delle nostre contrade.
@@ -1794,10 +1799,7 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
           maxlength="30"
           style="width: 100%; padding: 0.9rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem;">
         <small style="color: #666; font-size: 0.85rem; margin-top: 0.3rem; display: block;">
-          Scegli un nome divertente!
-        </small>
-        <small style="color: #8338ec; font-size: 0.9rem; margin-top: 0.5rem; display: block; font-weight: 600;">
-          ℹ️ L'iscrizione non è obbligatoria ma consigliata per capire il numero di partecipanti. La partecipazione è completamente GRATUITA! 🎉
+                    ℹ️ L'iscrizione non è obbligatoria ma consigliata. La partecipazione è completamente GRATUITA! 🎉
         </small>
       </div>
 
