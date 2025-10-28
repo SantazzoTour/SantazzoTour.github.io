@@ -1457,24 +1457,77 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
 
 <hr style="margin: 3rem 0; border: 2px solid #ddd;">
 
-<div class="form-section">
+<div class="form-section" id="form_registrazione">
   <h3 style="text-align: center; color: white; font-family: 'Bangers', cursive; font-size: 2rem; margin-bottom: 1.5rem; letter-spacing: 1.5px; line-height: 1.3;">
     <span class="emoji-float">📝</span> ISCRIVITI È GRATIS! <span class="emoji-float">🎫</span>
   </h3>
-  <div class="embed-responsive" id="form_registrazione">
-      <iframe 
-        class="embed-responsive-item" 
-        src="https://docs.google.com/forms/d/e/1FAIpQLSec6nmDdqh3WiahU5q6wJWVM76X95qcIG_gUG4qIfabFMd5Dw/viewform?embedded=true" 
-        frameborder="0" 
-        marginheight="0" 
-        marginwidth="0" 
-        style="width: 100%; height: 550px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
-      Caricamento…
-      </iframe>
-    </div>
+  
+  <div style="max-width: 600px; margin: 0 auto; background: rgba(255,255,255,0.95); padding: 2rem; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);">
+    <form id="registrationForm" onsubmit="registraPartecipante(event)">
+      
+      <!-- Nome -->
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; font-weight: 600; color: #333; margin-bottom: 0.5rem; font-size: 1rem;">
+          👤 Nome e Cognome *
+        </label>
+        <input 
+          type="text" 
+          id="regNome" 
+          class="form-control" 
+          placeholder="Es: Mario Rossi" 
+          required
+          style="width: 100%; padding: 0.9rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem;">
+      </div>
 
+      <!-- Email -->
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; font-weight: 600; color: #333; margin-bottom: 0.5rem; font-size: 1rem;">
+          📧 Email *
+        </label>
+        <input 
+          type="email" 
+          id="regEmail" 
+          class="form-control" 
+          placeholder="Es: mario.rossi@email.com" 
+          required
+          style="width: 100%; padding: 0.9rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem;">
+        <small style="color: #666; font-size: 0.85rem; margin-top: 0.3rem; display: block;">
+          Ti invieremo i dettagli dell'evento
+        </small>
+      </div>
 
+      <!-- Telefono (opzionale) -->
+      <div style="margin-bottom: 1.5rem;">
+        <label style="display: block; font-weight: 600; color: #333; margin-bottom: 0.5rem; font-size: 1rem;">
+          📱 Telefono (opzionale)
+        </label>
+        <input 
+          type="tel" 
+          id="regTelefono" 
+          class="form-control" 
+          placeholder="Es: 333 1234567"
+          style="width: 100%; padding: 0.9rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem;">
+      </div>
+
+      <!-- Messaggio di errore -->
+      <div id="regError" style="display: none; background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; text-align: center; font-weight: 600;">
+      </div>
+
+      <!-- Bottone Submit -->
+      <button 
+        type="submit" 
+        id="regSubmitBtn"
+        class="btn btn-modern" 
+        style="width: 100%; padding: 1.2rem !important; font-size: 1.2rem !important; margin-top: 0.5rem;">
+        <span style="font-size: 1.3em;">🎉</span> ISCRIVITI ORA!
+      </button>
+      
+      <p style="text-align: center; font-size: 0.85rem; color: #666; margin-top: 1rem; margin-bottom: 0;">
+        * Campi obbligatori
+      </p>
+    </form>
   </div>
+</div>
 
     <!-- Bottone per visualizzare i partecipanti -->
     <button 
@@ -1482,72 +1535,222 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
       class="btn btn-modern" 
       style="display: block; width: 100%; margin-top: 1.5rem;"
       onclick="mostraPartecipanti()">
-      <span style="font-size: 1.2em;">👥</span> Visualizza Partecipanti <span style="font-size: 1.2em;">🎉</span>
+      <span style="font-size: 1.2em;">👥</span> Visualizza Partecipanti (<span id="contatorePartecipanti">0</span>) <span style="font-size: 1.2em;">🎉</span>
     </button>
     
-    <!-- Sezione per la tabella dei partecipanti, nascosta inizialmente -->
+    <!-- Sezione per la tabella dei partecipanti -->
     <div id="tableContainer" style="display: none; margin-top: 20px; background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 800px; margin-left: auto; margin-right: auto;">
       <h4 style="text-align: center; font-family: 'Bangers', cursive; font-size: 2rem; color: var(--party-purple); margin-bottom: 1.5rem; letter-spacing: 2px; line-height: 1.3;">
-         I SANTAZZARI 2025
+        🎊 I SANTAZZARI 2025 🎊
       </h4>
-        <table class="table table-modern" style="margin-bottom: 0;width: 100%;">
+      <div style="max-height: 500px; overflow-y: auto; border-radius: 15px;">
+        <table class="table table-modern" style="margin-bottom: 0; width: 100%;">
           <thead style="position: sticky; top: 0; z-index: 10;">
             <tr>
-              <th style="text-align: center; padding: 1.2rem !important; font-size: 1.1rem;">👤 Nome</th>
+              <th style="text-align: left; padding: 1.2rem !important; font-size: 1.1rem;">👤 Nome</th>
+              <th style="text-align: center; padding: 1.2rem !important; font-size: 1.1rem;">📅 Data</th>
             </tr>
           </thead>
           <tbody id="partecipantiBody">
-            <!-- I dati dei partecipanti saranno caricati qui -->
+            <tr>
+              <td colspan="2" style="text-align: center; padding: 2rem; opacity: 0.6;">
+                Caricamento partecipanti...
+              </td>
+            </tr>
           </tbody>
         </table>
+      </div>
     </div>
 
+<script>
+// ============================================
+// SISTEMA REGISTRAZIONE PARTECIPANTI FIREBASE
+// ============================================
 
-	 <script>
-    // URL del foglio Google Sheets pubblicato in formato CSV
-    const googleSheetCSVUrl = 'https://docs.google.com/spreadsheets/d/1sHIA_rPXD348pFjid1afcasABuhVC2orGV9PoPwqRPs/gviz/tq?tqx=out:csv';
-
-    // Funzione per mostrare titolo, tabella e caricare i partecipanti
-    function mostraPartecipanti() {
-      document.getElementById('tableContainer').style.display = 'block';
-      caricaPartecipanti();
-    }
-
-    // Funzione per caricare e visualizzare i partecipanti
-    async function caricaPartecipanti() {
-      try {
-        const response = await fetch(googleSheetCSVUrl);
-        const csvData = await response.text();
-
-        // Trasforma CSV in array
-        const rows = csvData.split('\n').slice(1);
-        const tableBody = document.getElementById('partecipantiBody');
-        tableBody.innerHTML = ''; // Pulisce la tabella
-
-        rows.forEach(row => {
-          const [timestamp, nome] = row.split(',');
-
-          if (nome) {
-            const newRow = document.createElement('tr');
-            const nomeCell = document.createElement('td');
-            nomeCell.textContent = nome.replace(/"/g, ''); // Rimuove eventuali virgolette
-            nomeCell.style.textAlign = 'center';
-            newRow.appendChild(nomeCell);
-            tableBody.appendChild(newRow);
-          }
-        });
-      } catch (error) {
-        console.error("Errore durante il caricamento dei dati:", error);
+// Funzione per registrare un nuovo partecipante
+function registraPartecipante(event) {
+  event.preventDefault();
+  
+  if (!database) {
+    alert('❌ Firebase non configurato! Contatta l\'organizzatore.');
+    return;
+  }
+  
+  const nome = document.getElementById('regNome').value.trim();
+  const email = document.getElementById('regEmail').value.trim().toLowerCase();
+  const telefono = document.getElementById('regTelefono').value.trim();
+  const submitBtn = document.getElementById('regSubmitBtn');
+  const errorDiv = document.getElementById('regError');
+  
+  // Validazione
+  if (!nome || !email) {
+    showRegError('⚠️ Compila tutti i campi obbligatori!');
+    return;
+  }
+  
+  // Disabilita il form
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span style="font-size: 1.3em;">⏳</span> Registrazione in corso...';
+  errorDiv.style.display = 'none';
+  
+  // Controlla se l'email esiste già
+  database.ref('partecipanti').orderByChild('email').equalTo(email).once('value')
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        // Email già registrata
+        showRegError('📧 Questa email è già registrata! Ogni persona può iscriversi una sola volta.');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span style="font-size: 1.3em;">🎉</span> ISCRIVITI ORA!';
+      } else {
+        // Salva il nuovo partecipante
+        const nuovoPartecipante = {
+          nome: nome,
+          email: email,
+          telefono: telefono || '',
+          timestamp: Date.now(),
+          dataIscrizione: new Date().toISOString()
+        };
+        
+        return database.ref('partecipanti').push(nuovoPartecipante);
       }
-    }
-  </script>
+    })
+    .then((result) => {
+      if (result) {
+        // Successo!
+        document.getElementById('registrationForm').reset();
+        showRegistrationModal();
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span style="font-size: 1.3em;">🎉</span> ISCRIVITI ORA!';
+        
+        // Aggiorna il contatore
+        aggiornaContatore();
+      }
+    })
+    .catch((error) => {
+      console.error('Errore registrazione:', error);
+      showRegError('❌ Errore nella registrazione. Riprova!');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span style="font-size: 1.3em;">🎉</span> ISCRIVITI ORA!';
+    });
+}
+
+function showRegError(message) {
+  const errorDiv = document.getElementById('regError');
+  errorDiv.textContent = message;
+  errorDiv.style.display = 'block';
+  setTimeout(() => {
+    errorDiv.style.display = 'none';
+  }, 5000);
+}
+
+// Funzione per mostrare e caricare i partecipanti
+function mostraPartecipanti() {
+  const container = document.getElementById('tableContainer');
+  
+  if (container.style.display === 'none') {
+    container.style.display = 'block';
+    caricaPartecipanti();
+  } else {
+    container.style.display = 'none';
+  }
+}
+
+// Funzione per caricare i partecipanti da Firebase
+function caricaPartecipanti() {
+  if (!database) {
+    document.getElementById('partecipantiBody').innerHTML = 
+      '<tr><td colspan="2" style="text-align: center; padding: 2rem; color: #ff6b6b;">❌ Firebase non configurato</td></tr>';
+    return;
+  }
+  
+  database.ref('partecipanti').orderByChild('timestamp').once('value')
+    .then((snapshot) => {
+      const tableBody = document.getElementById('partecipantiBody');
+      tableBody.innerHTML = '';
+      
+      if (!snapshot.exists()) {
+        tableBody.innerHTML = 
+          '<tr><td colspan="2" style="text-align: center; padding: 2rem; opacity: 0.6;">Nessun partecipante ancora 🎭</td></tr>';
+        return;
+      }
+      
+      const partecipanti = [];
+      snapshot.forEach((child) => {
+        partecipanti.push(child.val());
+      });
+      
+      // Ordina per timestamp decrescente (più recenti prima)
+      partecipanti.sort((a, b) => b.timestamp - a.timestamp);
+      
+      partecipanti.forEach((partecipante) => {
+        const row = document.createElement('tr');
+        
+        // Colonna Nome
+        const nomeCell = document.createElement('td');
+        nomeCell.textContent = partecipante.nome;
+        nomeCell.style.padding = '1rem';
+        nomeCell.style.fontWeight = '500';
+        
+        // Colonna Data
+        const dataCell = document.createElement('td');
+        const data = new Date(partecipante.timestamp);
+        dataCell.textContent = data.toLocaleDateString('it-IT', { 
+          day: '2-digit', 
+          month: '2-digit',
+          year: 'numeric'
+        });
+        dataCell.style.padding = '1rem';
+        dataCell.style.textAlign = 'center';
+        dataCell.style.opacity = '0.7';
+        dataCell.style.fontSize = '0.9rem';
+        
+        row.appendChild(nomeCell);
+        row.appendChild(dataCell);
+        tableBody.appendChild(row);
+      });
+    })
+    .catch((error) => {
+      console.error('Errore caricamento partecipanti:', error);
+      document.getElementById('partecipantiBody').innerHTML = 
+        '<tr><td colspan="2" style="text-align: center; padding: 2rem; color: #ff6b6b;">❌ Errore nel caricamento</td></tr>';
+    });
+}
+
+// Funzione per aggiornare il contatore
+function aggiornaContatore() {
+  if (!database) return;
+  
+  database.ref('partecipanti').once('value')
+    .then((snapshot) => {
+      const count = snapshot.numChildren();
+      document.getElementById('contatorePartecipanti').textContent = count;
+    })
+    .catch((error) => {
+      console.error('Errore contatore:', error);
+    });
+}
+
+// Carica il contatore all'avvio
+window.addEventListener('load', () => {
+  if (database) {
+    aggiornaContatore();
+    
+    // Aggiorna il contatore in tempo reale
+    database.ref('partecipanti').on('value', (snapshot) => {
+      const count = snapshot.numChildren();
+      document.getElementById('contatorePartecipanti').textContent = count;
+    });
+  }
+});
+</script>
 
 <br/>
 <hr style="margin: 3rem 0; border: 2px solid #ddd;">	
 
 <div class="container" id="tabellaTappe" >
   <div class="section-title" style="margin-top: 2rem;">
-     LE TAPPE 
+    <span class="emoji-float">🗺️</span> LE TAPPE <span class="emoji-float">🍻</span>
+  </div> 
   </div>
 
   <!-- <div style="text-align: center; margin: 2rem 0;">
