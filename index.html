@@ -1432,7 +1432,7 @@ if (document.readyState === 'loading') {
 <!-- SEZIONE QUIZ TAPPE -->
 <div class="container" id="quizSection" style="margin-top: 1px; margin-bottom: 3rem; display: none;">
   <div class="section-title">
-    <span class="emoji-float">🎯</span> QUIZ DELLE TAPPE <span class="emoji-float">🏆</span>
+     QUIZ
   </div>
 
   <!-- Pannello Amministratore (Password Protected) -->
@@ -1493,8 +1493,9 @@ if (document.readyState === 'loading') {
       </h4>
       <div style="max-width: 400px; margin: 0 auto;">
         <input type="text" id="participantName" class="form-control" placeholder="Inserisci il tuo nome" style="margin-bottom: 1rem; padding: 1rem; border-radius: 10px; font-size: 1.1rem; text-align: center;">
-        <button onclick="joinQuiz()" class="btn btn-modern" style="width: 100%; padding: 1rem !important; font-size: 1.2rem !important;">
-          ✅ ENTRA
+
+        <button onclick="joinQuiz()" class="btn btn-modern" style="width: 100%; padding: 1rem !important; font-size: 1.2rem !important; cursor: pointer;">
+          <span style="pointer-events: none;">✅ ENTRA</span>
         </button>
       </div>
     </div>
@@ -1768,7 +1769,6 @@ Di seguito troverai le tappe e i partecipanti. </br> <b>Una settimana prima dell
   <span class="hashtag">#MolaMia</span>
   <span class="hashtag">#Santazzari</span>
   <span class="hashtag">#SanTazzo</span>
-  <span class="hashtag">#Morethananight</span>
 </div>
 </div>
 
@@ -2023,18 +2023,18 @@ window.addEventListener('load', () => {
 <br/>
 
 <div class="container" id="tabellaTappe" >
-  <div class="section-title" style="margin-top: 2rem;">
-    <span class="emoji-float">🗺️</span> LE TAPPE <span class="emoji-float">🍻</span>
+  <div class="section-title" style="margin-top: 10px;">
+     LE TAPPE
   </div> 
   </div>
 
-  <!-- <div style="text-align: center; margin: 2rem 0;">
+   <div style="text-align: center; margin: 2rem 0;">
     <h4 style="font-family: 'Poppins', sans-serif; color: #555; font-weight: 300;">
       TAPPE DA DEFINIRSI
     </h4>
-  </div> -->
+  </div> 
 
-<div class="tappe-card">
+<div class="tappe-card" style="display: none;">
 <table class="table table-modern" id="tabellaTappe" style="margin: 0;">
   <thead>
     <tr>
