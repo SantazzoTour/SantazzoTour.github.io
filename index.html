@@ -2336,7 +2336,9 @@ function endQuiz() {
   // Disattiva il quiz su Firebase
   database.ref('currentQuiz/active').set(false)
     .then(() => {
-      currentQuizData.active = false;
+      if (currentQuizData) {
+        currentQuizData.active = false;
+      }
 
       // Mostra tutte le risposte finali ordinate
       let resultHTML = '<div style="background: rgba(255,215,0,0.3); padding: 1.2rem; border-radius: 12px; margin-bottom: 1rem; text-align: center; border: 2px solid #ffd700;">';
@@ -2352,6 +2354,9 @@ function endQuiz() {
         resultHTML += '<h6 style="font-weight: 700; color: #155724; margin-bottom: 0.8rem;">✅ RISPOSTE CORRETTE (ordine di arrivo):</h6>';
         correctAnswers.forEach((answer, index) => {
           const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}°`;
+          const timeStr = currentQuizData && currentQuizData.startTime 
+            ? `⏱️ ${((answer.timestamp - currentQuizData.startTime) / 1000).toFixed(2)}s` 
+            : '';
           resultHTML += `
             <div style="background: white; padding: 0.8rem; margin-bottom: 0.5rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
               <div>
@@ -2359,7 +2364,7 @@ function endQuiz() {
                 <div style="font-size: 0.95rem; color: #666; margin-top: 0.2rem;">💬 ${answer.answer}</div>
               </div>
               <div style="text-align: right; font-size: 0.9rem; color: #888;">
-                ⏱️ ${((answer.timestamp - currentQuizData.startTime) / 1000).toFixed(2)}s
+                ${timeStr}
               </div>
             </div>
           `;
@@ -2374,10 +2379,13 @@ function endQuiz() {
         resultHTML += '<h6 style="font-weight: 700; color: #721c24; margin-bottom: 0.8rem;">❌ RISPOSTE SBAGLIATE:</h6>';
         resultHTML += '<div style="max-height: 250px; overflow-y: auto;">';
         wrongAnswers.forEach((answer) => {
+          const timeStr = currentQuizData && currentQuizData.startTime 
+            ? `⏱️ ${((answer.timestamp - currentQuizData.startTime) / 1000).toFixed(2)}s` 
+            : '';
           resultHTML += `
             <div style="background: white; padding: 0.6rem; margin-bottom: 0.4rem; border-radius: 8px; font-size: 0.95rem;">
               <strong>${answer.name}:</strong> ${answer.answer}
-              <span style="opacity: 0.6; margin-left: 0.5rem;">⏱️ ${((answer.timestamp - currentQuizData.startTime) / 1000).toFixed(2)}s</span>
+              <span style="opacity: 0.6; margin-left: 0.5rem;">${timeStr}</span>
             </div>
           `;
         });
