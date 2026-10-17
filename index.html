@@ -1869,7 +1869,7 @@ textarea.form-control {
     <!-- Sezione per la tabella dei partecipanti -->
     <div id="tableContainer" style="display: none; margin-top: 20px; background: white; padding: 2rem; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 800px; margin-left: auto; margin-right: auto;">
       <h4 style="text-align: center; font-family: 'Bangers', cursive; font-size: 2rem; color: var(--party-purple); margin-bottom: 1.5rem; letter-spacing: 2px; line-height: 1.3;">
-       I SANTAZZARI 2025
+       I SANTAZZARI
       </h4>
       <div>
         <table class="table table-modern" style="margin-bottom: 0; width: 100%;">
@@ -2046,9 +2046,49 @@ function aggiornaContatore() {
     });
 }
 
+// ============================================
+// PULIZIA AUTOMATICA PARTECIPANTI DOPO 1 MESE
+// ============================================
+function pulisciPartecipantiScaduti() {
+  if (!database) return;
+
+  const now = new Date();
+  const annoCorrente = now.getFullYear();
+
+  // Determina la data dell'ultima edizione conclusa
+  let dataUltimoSanTazzo = getDataSanTazzo(annoCorrente);
+  if (now < dataUltimoSanTazzo) {
+    // SanTazzo di quest'anno deve ancora avvenire, l'ultima conclusa è quella dell'anno precedente
+    dataUltimoSanTazzo = getDataSanTazzo(annoCorrente - 1);
+  }
+
+  // Calcola il limite: 30 giorni dopo l'evento (in millisecondi)
+  const trentaGiorniInMs = 30 * 24 * 60 * 60 * 1000;
+  const dataScadenza = new Date(dataUltimoSanTazzo.getTime() + trentaGiorniInMs);
+
+  // Se siamo oltre i 30 giorni dalla fine dell'evento
+  if (now >= dataScadenza) {
+    database.ref('partecipanti').once('value')
+      .then((snapshot) => {
+        if (!snapshot.exists()) return;
+
+        snapshot.forEach((child) => {
+          const partecipante = child.val();
+          // Se la registrazione è avvenuta prima della scadenza dell'ultima edizione, rimuovila
+          if (!partecipante.timestamp || partecipante.timestamp < dataScadenza.getTime()) {
+            database.ref('partecipanti/' + child.key).remove();
+          }
+        });
+        console.log("🧹 Controllo pulizia: partecipanti dell'edizione passata rimossi.");
+      })
+      .catch((error) => console.error("Errore pulizia automatica:", error));
+  }
+}
+	
 // Carica il contatore all'avvio
 window.addEventListener('load', () => {
   if (database) {
+	pulisciPartecipantiScaduti();
     aggiornaContatore();
     
     // Aggiorna il contatore in tempo reale
